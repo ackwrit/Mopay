@@ -44,7 +44,7 @@ const navTheme = {
   return (
     <UserProvider>
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName='splash' screenOptions={{headerShown:false,animation:"fade"}}>
+      <Stack.Navigator initialRouteName='dashboard' screenOptions={{headerShown:false,animation:"fade"}}>
         <Stack.Screen name='splash' component={Mysplashscreen}></Stack.Screen>
         <Stack.Screen name='register' component={Register}></Stack.Screen>
          <Stack.Screen name='connect' component={Connexion}></Stack.Screen>

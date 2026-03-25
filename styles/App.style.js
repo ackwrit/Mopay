@@ -87,6 +87,48 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#4caf50',
   },
+  dashboardImageBackground : {
+    flex : 1,
+    justifyContent : 'space-between',
+    alignItems :"center"
+    
+  },
+
+   bloc_dashboard: {
+    
+   
+    width : "100%",
+    
+    backgroundColor : "red",
+    justifyContent : "space-around",
+    paddingHorizontal : 10,
+    fontFamily :'Roboto-condensed',
+    fontWeight :'medium',
+    fontSize : 16,
+    color :"black",
+    flex : 1
+    
+
+  },
+  history_dashboard: {
+    flex : 2,
+    backgroundColor : "blue",
+    
+    color :"red",
+
+  },
+  bottom_dashboard: {
+    height : 90,
+    
+
+    
+    backgroundColor :"blue",
+
+  }
+
+
+
+
 
 
 
