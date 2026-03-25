@@ -99,14 +99,15 @@ const styles = StyleSheet.create({
    
     width : "100%",
     
-    backgroundColor : "red",
+ 
     justifyContent : "space-around",
     paddingHorizontal : 10,
     fontFamily :'Roboto-condensed',
     fontWeight :'medium',
     fontSize : 16,
     color :"black",
-    flex : 1
+    flex : 1,
+    marginBottom : 10
     
 
   },

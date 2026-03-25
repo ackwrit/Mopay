@@ -2,6 +2,7 @@ import { Image, ImageBackground, Text, View } from "react-native";
 import backgroundImage from "../assets/background.png"
 import logo from "../assets/logo.png"
 import { styles } from "../styles/App.style";
+import { MySummaryButton } from "../components/MySummaryButton";
 
 
 
@@ -15,7 +16,7 @@ export function Dashboard(){
             
             <View style={styles.bloc_dashboard}>
                 <Text>Bonjour </Text>
-                <Text>Valeur</Text>
+                <MySummaryButton/>
                 <Text>Logo design</Text>
             
             </View>
