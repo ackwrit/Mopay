@@ -9,10 +9,17 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "scheme": "MoPay",
+      "platforms": [
+        "ios",
+        "android",
+        "web"
+      ]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.Mopay"
     },
     "android": {
       "adaptiveIcon": {
