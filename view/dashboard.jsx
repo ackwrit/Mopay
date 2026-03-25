@@ -3,6 +3,8 @@ import backgroundImage from "../assets/background.png"
 import logo from "../assets/logo.png"
 import { styles } from "../styles/App.style";
 import { MySummaryButton } from "../components/MySummaryButton";
+import { MyButtonTypePaiement } from "../components/MyButtonTypePaiement";
+import { MyNavBar } from "../components/MyNavBar";
 
 
 
@@ -17,15 +19,21 @@ export function Dashboard(){
             <View style={styles.bloc_dashboard}>
                 <Text>Bonjour </Text>
                 <MySummaryButton/>
-                <Text>Logo design</Text>
+                <View style={styles.typepaimeentContainer}>
+                    <MyButtonTypePaiement icone={"qr-code"}/>
+                    <MyButtonTypePaiement icone={"wifi-outline"}/>
+                </View>
             
             </View>
             <View  style={styles.history_dashboard}>
-            <Text>Mini Historique</Text>
+                <View style={styles.header_bloc_history}>
+                    <Text style= {styles.title}>Activité récente</Text>
+                    <Text style={styles.subtitle}>Voir tout</Text>
+
+                </View>
+            
             </View>
-            <View style={styles.bottom_dashboard}>
-            <Text >Naviagtion bar bottom</Text>
-            </View>
+            <MyNavBar/>
 
             
             
