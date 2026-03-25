@@ -1,5 +1,8 @@
 
 import { supabase } from "../services/supabase";
+import {AsyncStorage} from "expo-sqlite/kv-store";
+import { getUser } from "../services/userService";
+import { initDB } from "../services/database";
 
 
 
@@ -11,6 +14,7 @@ export class MyUser {
     fullName = null,
     phone = null,
     createdAt = null,
+    user_token = null,
     
 
     }){
@@ -19,6 +23,7 @@ export class MyUser {
         this.fullName = fullName;
         this.phone = phone;
         this.createdAt = createdAt;
+        this.user_token = user_token;
       
 
     }
@@ -29,10 +34,13 @@ export class MyUser {
         });
      
           if(error) throw error;
+          
          
           //recuperation uuid
           const id = data.user.id;
+          this.id = id;
           const token = data.session.access_token;
+        
 
           const {error: insertEror} = await supabase.from("USERS").insert(
             [
@@ -48,7 +56,24 @@ export class MyUser {
                 }
             ]
           );
+          
+          
+          const dataSupaBase = await getUser(id);
+         
+          if(dataSupaBase && dataSupaBase.data && dataSupaBase.data.length > 0){
+            this.mail = dataSupaBase.data[0].mail;
+            this.createdAt = dataSupaBase.data[0].created_at
+            this.phone = dataSupaBase.data[0].phone;
+            this.fullName = dataSupaBase.data[0].full_name;
+            this.user_token = dataSupaBase.data[0].user_token;
+
+          }
+          
+ 
           if(insertEror) throw insertEror
+          await AsyncStorage.setItem('user',JSON.stringify(this));
+           await initDB();
+          
 
     }
 
@@ -56,11 +81,35 @@ export class MyUser {
         try {
         const {data, error} = await supabase.auth.signInWithPassword({email:emailTapped,password:passwordTapped});
         if(error) throw error;
-         console.log(JSON.stringify(data, null, 2));
+        
+         this.id = data.user.id;
+         const id = this.id
+         
+         const dataBDD = await getUser(id);
+          
+         if(dataBDD && dataBDD.data && dataBDD.data.length >0){
+           
+            this.mail = dataBDD.data[0].mail;
+            this.createdAt = dataBDD.data[0].created_at
+            this.phone = dataBDD.data[0].phone;
+            this.fullName = dataBDD.data[0].full_name;
+            this.user_token = dataBDD.data[0].user_token;
+         }
+
+         
+         
+          await AsyncStorage.setItem('user',JSON.stringify(this));
+            await initDB();
          
         } catch (e){
             console.log("erreur" + e);
+            return false;
         }
+        return true;
+
+        
     }
+
+   
 
 }

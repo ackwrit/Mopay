@@ -24,8 +24,13 @@ export function Connexion() {
 
   async function connexionBdd(){
     const newUser = new MyUser({...myUser});
-    await newUser.connect(mailTapped,passTapped);
+    const value = await newUser.connect(mailTapped,passTapped);
     setMyUser(myUser);
+    if(value){
+      nav.navigate('dashboard');
+
+    }
+    
 
 
 

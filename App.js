@@ -5,12 +5,18 @@ import { Connexion } from './view/connexion';
 import { Mysplashscreen} from './view/Mysplashscreen'
 import { UserProvider } from './view/UserContext';
 import { Verificationmail } from './view/Verificationmail';
-import React,{ useEffect } from 'react';
+import React,{ useEffect, useState } from 'react';
 import * as Linking  from 'expo-linking';
 import { Dashboard, dashboard } from './view/dashboard';
+import AsyncStorage from "expo-sqlite/kv-store";
+
 
 const Stack = createNativeStackNavigator();
 export default function App() {
+  const [firstPage,setFirsPage] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
+
+
   const handleDeepLink = (event) => {
     const url = event.url;
     // Exemple url : "MoPay://confirm-email?token=1234"
@@ -22,6 +28,20 @@ export default function App() {
       navigation.navigate('confirm', { token: queryParams.token });
     }
   };
+
+  async function loadPage(){
+    const dataInscrit  = await AsyncStorage.getItem('user') ?? null;
+    console.log(dataInscrit);
+    if(dataInscrit !== null){
+      setFirsPage(true);
+    }
+    setIsLoading(true);
+  }
+
+  useEffect(()=>{
+    loadPage();
+
+  },[]);
 
   useEffect(() => {
     const subscription = Linking.addEventListener('url', handleDeepLink);
@@ -40,11 +60,11 @@ const navTheme = {
   background : "transparent"
  }
 };
- 
+ if (isLoading){
   return (
     <UserProvider>
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName='splash' screenOptions={{headerShown:false,animation:"fade"}}>
+      <Stack.Navigator initialRouteName={(firstPage)?'dashboard':'splash'} screenOptions={{headerShown:false,animation:"fade"}}>
         <Stack.Screen name='splash' component={Mysplashscreen}></Stack.Screen>
         <Stack.Screen name='register' component={Register}></Stack.Screen>
          <Stack.Screen name='connect' component={Connexion}></Stack.Screen>
@@ -57,6 +77,7 @@ const navTheme = {
     </UserProvider>
  
   );
+}
 }
 
 
