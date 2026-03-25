@@ -2,7 +2,7 @@
 import { Image, ImageBackground, Text, View } from 'react-native';
 import { styles } from '../styles/App.style';
 import backgroundElement from '../assets/image.png'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
 import { MyTextInput } from '../components/MyTextInput';
 import { FontAwesome } from '@expo/vector-icons';
 import { MyBouton } from '../components/MyBouton';

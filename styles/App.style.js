@@ -88,6 +88,75 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#4caf50',
   },
+  dashboardImageBackground : {
+    flex : 1,
+    justifyContent : 'space-between',
+    alignItems :"center"
+    
+  },
+
+   bloc_dashboard: {
+    
+   
+    width : "100%",
+    
+ 
+    justifyContent : "space-around",
+    paddingHorizontal : 10,
+    fontFamily :'Roboto-condensed',
+    fontWeight :'medium',
+    fontSize : 16,
+    color :"black",
+    flex : 1,
+    marginBottom : 10
+    
+
+  },
+  history_dashboard: {
+    flex : 2,
+    margin : 10,
+    width : "90%",
+    backgroundColor : "#F7F9FB",
+    borderRadius : 20,
+    borderColor :"black",
+    borderWidth : 1,
+    padding : 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+    width: 0,
+    height: 3,
+    },
+    shadowOpacity:  0.18,
+    shadowRadius: 4.59,
+    elevation: 5
+    
+    
+
+  },
+  bottom_dashboard: {
+    height : 90,
+    
+
+    
+    backgroundColor :"blue",
+
+  },
+
+  typepaimeentContainer : {
+    flexDirection :"row",
+    justifyContent : "space-evenly",
+    alignItems : "center"
+  },
+
+  header_bloc_history : {
+    flexDirection :"row",
+    alignItems :"baseline",
+    justifyContent :"space-between"
+  }
+
+
+
+
 
   dashboardImageBackground : {
     flex : 1,
