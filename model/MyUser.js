@@ -1,4 +1,5 @@
 
+import { initDB } from "../services/database";
 import { supabase } from "../services/supabase";
 import AsyncStorage from "expo-sqlite/kv-store";
 
@@ -70,6 +71,7 @@ export class MyUser {
           );
           if(insertEror) throw insertEror
           await this.save();
+          
 
     }
 
@@ -85,6 +87,7 @@ export class MyUser {
          this.token = data.session.access_token;
 
           await this.save();
+          
          
         } catch (e){
             console.log("erreur" + e);
