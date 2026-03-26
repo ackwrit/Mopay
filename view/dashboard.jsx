@@ -8,7 +8,8 @@ import { MyNavBar } from "../components/MyNavBar";
 import { useEffect } from "react";
 import { useUser } from "./UserContext";
 import { MyUser } from "../model/MyUser";
-import AsyncStorage from "expo-sqlite/kv-store";
+
+
 
 
 
@@ -17,13 +18,13 @@ export function Dashboard(){
     useEffect(()=>{
         getLocal();
 
-    },[myUser]);
+    },[]);
 
     async function getLocal() {
-        const isLocal = await AsyncStorage.getItem('user');
-        const parseUser = await JSON.parse(isLocal);
-        const newUser = new MyUser(parseUser);
-        setMyUser(newUser);
+       const value = await MyUser.getStorage();
+       setMyUser(value);
+    
+
         
     }
 

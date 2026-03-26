@@ -25,6 +25,21 @@ export class MyUser {
       
 
     }
+
+    async save(){
+        await AsyncStorage.setItem('user',JSON.stringify(this));
+    }
+      static fromStorage(jsonString) {
+        if (!jsonString) return null;
+        const obj = JSON.parse(jsonString);
+        return new MyUser(obj);
+    }
+
+    static async getStorage(){
+        const stored = await AsyncStorage.getItem('user');
+        return MyUser.fromStorage(stored);
+
+    }
     async register(password){
         const {data,error} = await supabase.auth.signUp({
             email : this.mail,
@@ -54,7 +69,7 @@ export class MyUser {
             ]
           );
           if(insertEror) throw insertEror
-          await AsyncStorage.setItem('user',JSON.stringify(this));
+          await this.save();
 
     }
 
@@ -69,7 +84,7 @@ export class MyUser {
          this.id = data.user.id;
          this.token = data.session.access_token;
 
-           await AsyncStorage.setItem('user',JSON.stringify(this));
+          await this.save();
          
         } catch (e){
             console.log("erreur" + e);
