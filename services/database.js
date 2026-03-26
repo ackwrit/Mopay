@@ -1,58 +1,60 @@
-import * as SQlite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import uuid from 'react-native-uuid';
 
 
 
-let db; 
+let db = SQLite.openDatabaseSync('Mopay.db'); 
+
+
 
 //initialisation de la base
-export const initDB = async ()=> {
-    if(!db){
-        db = await SQlite.openDatabaseAsync('Mopay.db'); 
-    }
-    return new Promise((resolve,reject)=> {
-             db.transaction(tx => {
-    // Table clients
-     tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS clients (
+export const initDB =  ()=> {
+    console.log(db);
+      
+    try {
+        db.execSync(`PRAGMA foreign_keys = ON;`);
+        db.execSync(
+            // Table clients
+        `CREATE TABLE IF NOT EXISTS clients (
         id TEXT PRIMARY KEY,
         userId TEXT,
         name TEXT,
         phone TEXT,
         token TEXT
-      );`
-    );
-
-    // Table factures
-    tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS invoices (
+      );`);
+      db.execSync(
+          `CREATE TABLE IF NOT EXISTS invoices (
         id TEXT PRIMARY KEY,
         userId TEXT,
         clientId TEXT,
         amount REAL,
         status TEXT,
-        createdAt TEXT
+        createdAt TEXT,
         FOREIGN KEY(clientId) REFERENCES clients(id) ON DELETE CASCADE
       );`
-    );
-  },
-  err => reject(err),
-  ()=> resolve(true)
-);
 
-    })
+      );
+      const clientId = addClient("user1", "Alice", "0341234567");
+      addInvoice("zeyjzjtfzy",clientId,200,"gfkdhfjqgrjh");
+        
+
+
+    }catch(erreur){
+         console.log("Erreur critique DB :", erreur);
+    }
+   
+     
   
 };
 
 // Ajouter un client
 export const addClient = (userId, name, phone) => {
   const clientId = uuid.v4();
-  db.transaction(tx => {
-    tx.executeSql(
-      'INSERT INTO clients (id, userId, name, phone) VALUES (?, ?, ?, ?)',
-      [clientId, userId, name, phone]
-    );
-  });
+  db.execSync(
+    `INSERT INTO clients (id, userId, name, phone) VALUES ('${clientId}', '${userId}', '${name}', '${phone}');`
+
+  );
+ 
   return clientId;
 };
 
@@ -60,27 +62,19 @@ export const addClient = (userId, name, phone) => {
 export const addInvoice = (userId, clientId, amount, status = 'pending') => {
   const invoiceId = uuid.v4();
   const createdAt = new Date().toISOString();
+  db.execSync(
+    `INSERT INTO invoices (id, userId, clientId, amount, status, createdAt) VALUES ('${invoiceId}', '${userId}', '${clientId}', '${amount}', '${status}', '${createdAt}');`
+  );
 
-  db.transaction(tx => {
-    tx.executeSql(
-      'INSERT INTO invoices (id, userId, clientId, amount, status, createdAt) VALUES (?, ?, ?, ?, ?, ?)',
-      [invoiceId, userId, clientId, amount, status, createdAt]
-    );
-  });
+ 
   return invoiceId;
 };
 
 // Lire les 100 dernières factures d’un utilisateur
-export const getLastInvoices = (userId, callback) => {
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT * FROM invoices WHERE userId = ? ORDER BY createdAt DESC LIMIT 100',
-      [userId],
-      (_, { rows }) => {
-        callback(rows._array);
-      }
-    );
-  });
+export const getLastInvoices = () => {
+   return  db.execSync('SELECT * FROM invoices ORDER BY createdAt DESC LIMIT 100');
+
+
 };
 
 // Lire tous les clients d’un utilisateur

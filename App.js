@@ -10,7 +10,7 @@ import * as Linking  from 'expo-linking';
 import { Dashboard, dashboard } from './view/dashboard';
 import AsyncStorage from 'expo-sqlite/kv-store';
 import { MyUser } from './model/MyUser';
-import { initDB } from './services/database';
+import { getLastInvoices, initDB } from './services/database';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -42,13 +42,12 @@ export default function App() {
     return () => subscription.remove();
   }, []);
   useEffect(()=>{
-    const init = async ()=> {
-      await buildDBLocal();
+   
+      buildDBLocal();
     
-    await checkLocal();
+     checkLocal();
 
-    }
-    init();
+   
     
 
   },[]);
@@ -72,8 +71,10 @@ async function checkLocal(){
   
   
 }
- async function buildDBLocal(){
-  await initDB();
+  function buildDBLocal(){
+   initDB();
+   const data = getLastInvoices();
+   console.log(data);
 
  }
 
