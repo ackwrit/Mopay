@@ -5,10 +5,27 @@ import { styles } from "../styles/App.style";
 import { MySummaryButton } from "../components/MySummaryButton";
 import { MyButtonTypePaiement } from "../components/MyButtonTypePaiement";
 import { MyNavBar } from "../components/MyNavBar";
+import { useEffect } from "react";
+import { useUser } from "./UserContext";
+import { MyUser } from "../model/MyUser";
+import AsyncStorage from "expo-sqlite/kv-store";
 
 
 
 export function Dashboard(){
+    const {myUser,setMyUser} = useUser();
+    useEffect(()=>{
+        getLocal();
+
+    },[myUser]);
+
+    async function getLocal() {
+        const isLocal = await AsyncStorage.getItem('user');
+        const parseUser = await JSON.parse(isLocal);
+        const newUser = new MyUser(parseUser);
+        setMyUser(newUser);
+        
+    }
 
 
     return (
@@ -17,7 +34,7 @@ export function Dashboard(){
                 <Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
-                <Text>Bonjour </Text>
+                <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName}</Text>
                 <MySummaryButton/>
                 <View style={styles.typepaimeentContainer}>
                     <MyButtonTypePaiement icone={"qr-code"}/>
