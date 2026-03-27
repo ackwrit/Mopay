@@ -1,16 +1,15 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Register, register } from './view/register';
+import { Register} from './view/register';
 import { Connexion } from './view/connexion';
 import { Mysplashscreen} from './view/Mysplashscreen'
 import { UserProvider, useUser } from './view/UserContext';
 import { Verificationmail } from './view/Verificationmail';
-import React,{ useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Linking  from 'expo-linking';
 import { Dashboard, dashboard } from './view/dashboard';
 import AsyncStorage from 'expo-sqlite/kv-store';
-import { MyUser } from './model/MyUser';
-import { addClient, addInvoice, getLastInvoices, initDB } from './services/database';
+import {initDB } from './services/database';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
