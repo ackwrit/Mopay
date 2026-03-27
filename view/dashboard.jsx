@@ -15,6 +15,7 @@ import { MyLabelhistory } from "../components/MyLabelhistory";
 
 
 
+
 export function Dashboard(){
     const {myUser,setMyUser} = useUser();
     const [dataFacture,setdataFacture]= useState([]);
@@ -74,6 +75,9 @@ export function Dashboard(){
 
     }
     const limitedList = mergeInvoice.slice(0,10);
+
+
+   
     
 
 
@@ -81,7 +85,7 @@ export function Dashboard(){
     return (
         <ImageBackground style={styles.dashboardImageBackground} imageStyle={{opacity:0.4}}source={backgroundImage}>
             
-                <Image style={styles.logo}source={logo}/>
+                {/*<Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
                 <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName}</Text>
@@ -116,7 +120,7 @@ export function Dashboard(){
               
             
             </View>
-            <MyNavBar/>
+            <MyNavBar/>*/}
 
 
             
