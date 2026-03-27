@@ -1,8 +1,6 @@
 
-import { supabase } from "../services/supabase";
-import {AsyncStorage} from "expo-sqlite/kv-store";
-import { getUser } from "../services/userService";
 import { initDB } from "../services/database";
+import { supabase } from "../services/supabase";
 
 
 
@@ -11,10 +9,9 @@ export class MyUser {
     constructor({
     id = null,
     mail,
-    fullName = null,
+    fullName = "Client MoPay",
     phone = null,
     createdAt = null,
-    user_token = null,
     
 
     }){
@@ -23,7 +20,6 @@ export class MyUser {
         this.fullName = fullName;
         this.phone = phone;
         this.createdAt = createdAt;
-        this.user_token = user_token;
       
 
     }
@@ -38,9 +34,7 @@ export class MyUser {
          
           //recuperation uuid
           const id = data.user.id;
-          this.id = id;
           const token = data.session.access_token;
-        
 
           const {error: insertEror} = await supabase.from("USERS").insert(
             [
@@ -49,8 +43,8 @@ export class MyUser {
                     mail: this.mail,
                     phone : this.phone,
                     full_name:this.fullName,
-                    created_at: new Date(),
-                    user_token : token
+                    created_at: date,
+                    user_token : tokenSupabase
 
 
                 }
@@ -71,35 +65,15 @@ export class MyUser {
           
  
           if(insertEror) throw insertEror
-          await AsyncStorage.setItem('user',JSON.stringify(this));
-           await initDB();
-          
 
     }
+
 
     async connect(emailTapped,passwordTapped){
         try {
         const {data, error} = await supabase.auth.signInWithPassword({email:emailTapped,password:passwordTapped});
         if(error) throw error;
-        
-         this.id = data.user.id;
-         const id = this.id
-         
-         const dataBDD = await getUser(id);
-          
-         if(dataBDD && dataBDD.data && dataBDD.data.length >0){
-           
-            this.mail = dataBDD.data[0].mail;
-            this.createdAt = dataBDD.data[0].created_at
-            this.phone = dataBDD.data[0].phone;
-            this.fullName = dataBDD.data[0].full_name;
-            this.user_token = dataBDD.data[0].user_token;
-         }
-
-         
-         
-          await AsyncStorage.setItem('user',JSON.stringify(this));
-            await initDB();
+         console.log(JSON.stringify(data, null, 2));
          
         } catch (e){
             console.log("erreur" + e);

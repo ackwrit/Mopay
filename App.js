@@ -3,20 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Register, register } from './view/register';
 import { Connexion } from './view/connexion';
 import { Mysplashscreen} from './view/Mysplashscreen'
-import { UserProvider } from './view/UserContext';
+import { UserProvider, useUser } from './view/UserContext';
 import { Verificationmail } from './view/Verificationmail';
 import React,{ useEffect, useState } from 'react';
 import * as Linking  from 'expo-linking';
 import { Dashboard, dashboard } from './view/dashboard';
-import AsyncStorage from "expo-sqlite/kv-store";
-
 
 const Stack = createNativeStackNavigator();
 export default function App() {
-  const [firstPage,setFirsPage] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
-
-
   const handleDeepLink = (event) => {
     const url = event.url;
     // Exemple url : "MoPay://confirm-email?token=1234"
@@ -54,19 +48,31 @@ export default function App() {
 
     return () => subscription.remove();
   }, []);
+  useEffect(()=>{
+   
+      buildDBLocal();
+    
+     checkLocal();
+
+   
+    
+
+  },[]);
+
+
+  const [isLoading,setIsLoadiang] = useState(false);
+  const [isExistLocal,setIsExistLocal] = useState(false);
  
 const navTheme = {
  colors : {
   background : "transparent"
  }
 };
- if (isLoading){
+ 
   return (
     <UserProvider>
     <NavigationContainer theme={navTheme}>
-
       <Stack.Navigator initialRouteName='dashboard' screenOptions={{headerShown:false,animation:"fade"}}>
-
         <Stack.Screen name='splash' component={Mysplashscreen}></Stack.Screen>
         <Stack.Screen name='register' component={Register}></Stack.Screen>
          <Stack.Screen name='connect' component={Connexion}></Stack.Screen>
