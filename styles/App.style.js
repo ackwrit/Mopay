@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
   dashboardImageBackground : {
     flex : 1,
     justifyContent : 'space-between',
-    alignItems :"center"
+    alignItems :"center",
+    paddingHorizontal : 10
     
   },
 

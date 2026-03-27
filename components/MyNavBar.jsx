@@ -1,33 +1,48 @@
-import { View , Text } from "react-native";
-import { styleNav } from "./MyNavBar.style";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { styleNav } from "./MyNavBar.style";
 
-export function MyNavBar(){
-    return (
-        <View style={styleNav.container}>
-             <View style={styleNav.navLabel}>
-            <Ionicons name="home" size={20}/>
-            <Text>Accueil</Text>
+export function MyNavBar({ state, descriptors, navigation }) {
+  return (
+    <View style={styleNav.container}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label = options.tabBarLabel !== undefined
+          ? options.tabBarLabel
+          : route.name;
 
-        </View>
-           <View style={styleNav.navLabel}>
-            <Ionicons name="time" size={20}/>
-            <Text>Historique</Text>
+        const isFocused = state.index === index;
 
-        </View>
-           <View style={styleNav.navLabel}>
-            <Ionicons name="person" size={20}/>
-            <Text>Clients</Text>
+        const onPress = () => {
+          if (!isFocused) {
+            navigation.navigate(route.name);
+          }
+        };
 
-        </View>
-           <View style={styleNav.navLabel}>
-            <Ionicons name="settings" size={20}/>
-            <Text>Paramètres</Text>
-
-        </View>
-       
-
-        </View>
-       
-    );
+        return (
+          <TouchableOpacity
+            key={route.key}
+            onPress={onPress}
+            style={styleNav.navLabel}
+          >
+            {/* Tu peux changer l'icône selon route.name */}
+            <Ionicons
+              name={
+                route.name === "Accueil"
+                  ? "home"
+                  : route.name === "Historique"
+                  ? "time"
+                  : route.name === "Clients"
+                  ? "person"
+                  : "settings"
+              }
+              size={20}
+              color={isFocused ? "blue" : "gray"}
+            />
+            <Text style={{ color: isFocused ? "blue" : "gray" }}>{label}</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 }
