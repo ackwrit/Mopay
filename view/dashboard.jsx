@@ -1,85 +1,53 @@
 import { Image, ImageBackground, ScrollView, Text, View } from "react-native";
 import backgroundImage from "../assets/background.png"
-import logo from "../assets/logo.png"
+
 import { styles } from "../styles/App.style";
-import { MySummaryButton } from "../components/MySummaryButton";
-import { MyButtonTypePaiement } from "../components/MyButtonTypePaiement";
+
 import { MyNavBar } from "../components/MyNavBar";
-import { useEffect, useState } from "react";
-import { useUser } from "./UserContext";
-import { MyUser } from "../model/MyUser";
-import { getLastInvoices ,getClients} from "../services/database";
-import { MyLabelhistory } from "../components/MyLabelhistory";
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Connexion } from "./connexion";
+
+import { MyHome } from "../components/home";
 
 
 
 
 
 export function Dashboard(){
-    const {myUser,setMyUser} = useUser();
-    const [dataFacture,setdataFacture]= useState([]);
-    const [mergeInvoice,setmergeInvoice]= useState([]);
-    useEffect(()=>{
-        getLocal();
+
+    const Tab = createBottomTabNavigator();
+     
+
     
-        
-
-    },[]);
-
-    useEffect(()=>{
-        const invoiceLocal =getData();
-        const dataclientLocal = getClientLocal();
-        console.log("facture :",invoiceLocal);
-        
-        console.log("client :",dataclientLocal);
-    
-         const clientsMap = Object.fromEntries(dataclientLocal.map(c => [c.id, c]));
-        
-         const mergedData = invoiceLocal.map(inv =>({
-            ...inv,
-            clientName : (clientsMap[inv.clientId])?.name ?? "client inconnu"
-
-         }));
-         setmergeInvoice(mergedData);
-         console.log(mergedData);
-        
-
-
-    },[]);
-    useEffect(()=>{
-        console.log('le tableau est modifié');
-
-    },[mergeInvoice])
-
-    async function getLocal() {
-       const value = await MyUser.getStorage();
-       setMyUser(value);
-    
-
-        
-    }
-    function getData(){
-        const parserdata = getLastInvoices();
-        setdataFacture(parserdata);
-        console.log("facture dans la fonction :",parserdata)
-        return parserdata;
-       
-        
-        
-        
-    }
-    function getClientLocal(){
-        const dataClient = getClients();
-        return dataClient;
-
-    }
-    const limitedList = mergeInvoice.slice(0,10);
     
 
 
 
     return (
         <ImageBackground style={styles.dashboardImageBackground} imageStyle={{opacity:0.4}}source={backgroundImage}>
+            <Tab.Navigator
+        
+        initialRouteName="Connexion"
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: { height: 60 },
+          tabBarLabelStyle: { fontSize: 12, fontWeight: '400' }, // pas de fontFamily custom
+          tabBarActiveTintColor: 'blue',
+          tabBarInactiveTintColor: 'gray',
+        }}
+        tabBar={(props) => <MyNavBar {...props} />}
+        
+      >
+          <Tab.Screen name="Accueil" component={MyHome} />
+        <Tab.Screen name="Historique" component={Connexion} />
+        <Tab.Screen name="Clients" component={Connexion} />
+        <Tab.Screen name="Paramètre" component={Connexion}/>
+      </Tab.Navigator>
+      </ImageBackground>
+
+        /*
+        
             
                 <Image style={styles.logo}source={logo}/>
             
@@ -124,6 +92,7 @@ export function Dashboard(){
             
 
         </ImageBackground>
+        */
         
     );
 }
