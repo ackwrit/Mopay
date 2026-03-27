@@ -46,53 +46,8 @@ export function Dashboard(){
       </Tab.Navigator>
       </ImageBackground>
 
-        /*
+
         
-            
-                <Image style={styles.logo}source={logo}/>
-            
-            <View style={styles.bloc_dashboard}>
-                <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName}</Text>
-                <MySummaryButton/>
-                <View style={styles.typepaimeentContainer}>
-                    <MyButtonTypePaiement icone={"qr-code"}/>
-                    <MyButtonTypePaiement icone={"wifi-outline"}/>
-                </View>
-            
-            </View>
-            <View  style={styles.history_dashboard}>
-                <View style={styles.header_bloc_history}>
-                    <Text style= {styles.title}>Activité récente</Text>
-                    <Text style={styles.subtitle}>Voir tout</Text>
-                   
-                    
-
-                </View>
-                <ScrollView>
-                       {
-                        limitedList.map((item,index)=>{
-                            return (
-                            <View key={item.id || index}>
-                               <MyLabelhistory items={item}/>
-                               <View style={{ height: 1, backgroundColor: "black"}} />
-                            </View>
-                            )
-                        })
-                    }
-
-                </ScrollView>
-              
-            
-            </View>
-            <MyNavBar/>*/}
-
-
-            
-            
-            
-
-        </ImageBackground>
-        */
         
     );
 }

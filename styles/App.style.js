@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
             aspectRatio: 1,
             resizeMode: "contain",
             
+            
     },
 
     elementImage : {

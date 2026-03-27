@@ -74,7 +74,7 @@ export function MyHome(){
 
 
     return (
-    <View style={{flex:1}}>
+    <View style={{flex:1,  alignItems:"center"}}>
             <Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
