@@ -34,8 +34,7 @@ export const initDB =  ()=> {
       );`
 
       );
-      const clientId = addClient("user1", "Alice", "0341234567");
-      addInvoice("zeyjzjtfzy",clientId,200,"gfkdhfjqgrjh");
+     
         
 
 
@@ -72,22 +71,18 @@ export const addInvoice = (userId, clientId, amount, status = 'pending') => {
 
 // Lire les 100 dernières factures d’un utilisateur
 export const getLastInvoices = () => {
-   return  db.execSync('SELECT * FROM invoices ORDER BY createdAt DESC LIMIT 100');
+  
+  
+   return db.getAllSync('SELECT * FROM invoices ORDER BY createdAt DESC LIMIT 100');
+   
 
 
 };
 
 // Lire tous les clients d’un utilisateur
-export const getClients = (userId, callback) => {
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT * FROM clients WHERE userId = ?',
-      [userId],
-      (_, { rows }) => {
-        callback(rows._array);
-      }
-    );
-  });
+export const getClients = () => {
+  return db.getAllSync("SELECT * FROM clients");
+  
 };
 
 // Supprimer une facture

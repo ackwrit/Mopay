@@ -10,7 +10,7 @@ import * as Linking  from 'expo-linking';
 import { Dashboard, dashboard } from './view/dashboard';
 import AsyncStorage from 'expo-sqlite/kv-store';
 import { MyUser } from './model/MyUser';
-import { getLastInvoices, initDB } from './services/database';
+import { addClient, addInvoice, getLastInvoices, initDB } from './services/database';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -65,6 +65,9 @@ async function checkLocal(){
   const isLocal = await AsyncStorage.getItem('user') ?? null;
   if(isLocal !== null){
     setIsExistLocal(true);
+
+
+   
   }
   setIsLoadiang(true);
 
@@ -73,8 +76,8 @@ async function checkLocal(){
 }
   function buildDBLocal(){
    initDB();
-   const data = getLastInvoices();
-   console.log(data);
+   
+   
 
  }
 
