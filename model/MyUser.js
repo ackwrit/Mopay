@@ -1,6 +1,7 @@
 
 import { initDB } from "../services/database";
 import { supabase } from "../services/supabase";
+import AsyncStorage from "expo-sqlite/kv-store";
 
 
 
@@ -12,6 +13,7 @@ export class MyUser {
     fullName = "Client MoPay",
     phone = null,
     createdAt = null,
+    token = null,
     
 
     }){
@@ -20,7 +22,23 @@ export class MyUser {
         this.fullName = fullName;
         this.phone = phone;
         this.createdAt = createdAt;
+        this.token = token
       
+
+    }
+
+    async save(){
+        await AsyncStorage.setItem('user',JSON.stringify(this));
+    }
+      static fromStorage(jsonString) {
+        if (!jsonString) return null;
+        const obj = JSON.parse(jsonString);
+        return new MyUser(obj);
+    }
+
+    static async getStorage(){
+        const stored = await AsyncStorage.getItem('user');
+        return MyUser.fromStorage(stored);
 
     }
     async register(password){
@@ -30,11 +48,12 @@ export class MyUser {
         });
      
           if(error) throw error;
-          
          
           //recuperation uuid
           const id = data.user.id;
-          const token = data.session.access_token;
+          const tokenSupabase = data.session.access_token;
+          const date = new Date();
+          this.id = id;
 
           const {error: insertEror} = await supabase.from("USERS").insert(
             [
@@ -50,21 +69,9 @@ export class MyUser {
                 }
             ]
           );
-          
-          
-          const dataSupaBase = await getUser(id);
-         
-          if(dataSupaBase && dataSupaBase.data && dataSupaBase.data.length > 0){
-            this.mail = dataSupaBase.data[0].mail;
-            this.createdAt = dataSupaBase.data[0].created_at
-            this.phone = dataSupaBase.data[0].phone;
-            this.fullName = dataSupaBase.data[0].full_name;
-            this.user_token = dataSupaBase.data[0].user_token;
-
-          }
-          
- 
           if(insertEror) throw insertEror
+          await this.save();
+          
 
     }
 
@@ -74,16 +81,17 @@ export class MyUser {
         const {data, error} = await supabase.auth.signInWithPassword({email:emailTapped,password:passwordTapped});
         if(error) throw error;
          console.log(JSON.stringify(data, null, 2));
+
+         this.mail = data.user.email;
+         this.id = data.user.id;
+         this.token = data.session.access_token;
+
+          await this.save();
+          
          
         } catch (e){
             console.log("erreur" + e);
-            return false;
         }
-        return true;
-
-        
     }
-
-   
 
 }

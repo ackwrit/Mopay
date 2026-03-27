@@ -84,12 +84,7 @@ export function Dashboard(){
                 <Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
-<<<<<<< HEAD
-
-                <Text>Bonjour </Text>
-=======
                 <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName}</Text>
->>>>>>> gestion-local
                 <MySummaryButton/>
                 <View style={styles.typepaimeentContainer}>
                     <MyButtonTypePaiement icone={"qr-code"}/>
