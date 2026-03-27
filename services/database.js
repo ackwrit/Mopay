@@ -49,8 +49,9 @@ export const initDB =  ()=> {
 // Ajouter un client
 export const addClient = (userId, name, phone) => {
   const clientId = uuid.v4();
+  const date = new Date();
   db.execSync(
-    `INSERT INTO clients (id, userId, name, phone) VALUES ('${clientId}', '${userId}', '${name}', '${phone}');`
+    `INSERT INTO clients (id, userId, name, phone,created_at) VALUES ('${clientId}', '${userId}', '${name}', '${phone}','${date}');`
 
   );
  

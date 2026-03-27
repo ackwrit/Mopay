@@ -156,6 +156,19 @@ const styles = StyleSheet.create({
     justifyContent :"space-between"
   },
 
+    ImageBackground : {
+    flex : 1,
+    justifyContent : 'space-between',
+    paddingHorizontal : 10
+    
+  },
+
+  header_Addclient :{
+    flexDirection : "row",
+    marginTop : 70,
+    alignItems :"center"
+  }
+
 
 
 

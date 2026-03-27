@@ -5,13 +5,13 @@ export const styleAllClient = StyleSheet.create({
         flex : 1,
         justifyContent : "space-between",
         alignItems :"center",
-        padding : 10
+       
 
 
 
     },
     header : {
-        marginTop : 80,
+        marginTop : 70,
        
         width : "100%",
         padding : 10,
