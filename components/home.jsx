@@ -78,7 +78,7 @@ export function MyHome(){
             <Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
-                <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName}</Text>
+                <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName ?? ""}</Text>
                 <MySummaryButton/>
                 <View style={styles.typepaimeentContainer}>
                     <MyButtonTypePaiement icone={"qr-code"}/>

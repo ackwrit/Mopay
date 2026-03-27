@@ -11,6 +11,7 @@ import { Dashboard, dashboard } from './view/dashboard';
 import AsyncStorage from 'expo-sqlite/kv-store';
 import { MyUser } from './model/MyUser';
 import { addClient, addInvoice, getLastInvoices, initDB } from './services/database';
+import { AddClient } from './view/AddClient';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -92,6 +93,7 @@ async function checkLocal(){
          <Stack.Screen name='connect' component={Connexion}></Stack.Screen>
          <Stack.Screen name='confirm' component={Verificationmail}></Stack.Screen>
          <Stack.Screen name='dashboard' component={Dashboard}></Stack.Screen>
+         <Stack.Screen name='addclient' component={AddClient}></Stack.Screen>
 
 
       </Stack.Navigator>

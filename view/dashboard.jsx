@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Connexion } from "./connexion";
 
 import { MyHome } from "../components/home";
+import { AllClient } from "../components/AllClient";
 
 
 
@@ -41,7 +42,7 @@ export function Dashboard(){
       >
           <Tab.Screen name="Accueil" component={MyHome} />
         <Tab.Screen name="Historique" component={Connexion} />
-        <Tab.Screen name="Clients" component={Connexion} />
+        <Tab.Screen name="Clients" component={AllClient} />
         <Tab.Screen name="Paramètre" component={Connexion}/>
       </Tab.Navigator>
       </ImageBackground>
