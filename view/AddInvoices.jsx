@@ -1,4 +1,4 @@
-import { View ,Text, ImageBackground, TouchableOpacity, ScrollView,Modal} from "react-native";
+import { View ,Text, ImageBackground, TouchableOpacity, ScrollView,Modal, TextInput} from "react-native";
 import { styles } from "../styles/App.style";
 import background from '../assets/background.png'
 import { FontAwesome } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MyCardClient } from "../components/MyCardClient";
 import { MyTextButton } from "../components/MyTextButton";
 import {MyBouton} from "../components/MyBouton";
+import {MyTextInput} from "../components/MyTextInput"
 
 export function AddInvoices(){
     const nav = useNavigation();
@@ -15,7 +16,16 @@ export function AddInvoices(){
     const [listclient,setlistclient] = useState([]);
     const [open,setOpen] = useState(false);
     const [modalVisible,setModalVissible] = useState(false);
+    const [listeArticle,setlisteArticle] = useState([]);
+    const [somme,setSomme] = useState();
+    const [name,setname] =useState();
+    const [prix,setprix] = useState(0);
 
+    const [quantite,setquantite] =useState(1);
+  
+    
+    
+    
     useFocusEffect(
         useCallback(()=>{
             AllClients();
@@ -51,14 +61,89 @@ export function AddInvoices(){
     function validation(){
         setModalVissible(false);
     }
+     function sommeTotal(){
+        const q = parseInt(quantite);
+        const p = parseInt(prix);
+        const sum = q * p;
+        setSomme(sum);
+
+     }
 
     
 
     return (
         <ImageBackground source={background} imageStyle={{opacity:0.4}} style={{flex:1,padding:10}}>
             <Modal visible={modalVisible} animationType="slide" >
-                  <ImageBackground source={background} style={{flex:1}} imageStyle={{opacity:0.4}}>
-                       <Text>Ajouter un service</Text>
+                  <ImageBackground source={background} style={{flex:1,alignItems:"center",padding:10,justifyContent:"center"}} imageStyle={{opacity:0.4}}>
+                    <View style={{marginTop:70}}>
+                        <Text style={styles.title}>Ajouter un article ou service</Text>
+
+                    </View>
+                    <View style={{width:"100%"}}>
+                        <MyTextInput text={"Entrer le nom"}  value={name} onChanged={setname}/>
+
+                    </View>
+                    <View style={{marginTop:10, flexDirection:"row", justifyContent:"space-between",width:"100%"}}>
+                         <View style={{
+                        padding:10,
+                        width : "40%",
+                        borderRadius:20,
+                        backgroundColor:"white",
+                        borderColor :"black",
+                        borderWidth :1
+                        }}>
+                        <TextInput keyboardType="numeric" placeholder="Entrer le prix" onChangeText={(item)=>{
+                            const number = parseInt(item) || 0; 
+                            setprix(number);
+                            setSomme(number * quantite); 
+                            }}/>
+                        
+                    </View>
+
+                     <View style={{
+                        padding:10,
+                        width : "40%",
+                        borderRadius:20,
+                        backgroundColor:"white",
+                        borderColor :"black",
+                        borderWidth :1
+                        }}>
+                        <TextInput keyboardType="numeric" placeholder="Entrer la quantité" onChangeText={(item)=>{
+                            const number = parseInt(item) || 0;
+                            setquantite(number);
+                            setSomme(prix * number);
+                            }}/>
+                        
+                    </View>
+
+                    </View>
+                    <View style={{
+                        flexDirection:"row",
+                        justifyContent:"space-between",
+                        alignItems :"center",
+                        width:"100%",
+                        marginTop:20,
+                        backgroundColor:"white",
+                        height :60,
+                        padding : 10,
+                        marginBottom : 20,
+                        borderColor :"black",
+                        borderWidth :1,
+                        borderRadius:20,
+
+                        }}>
+                        <Text>Total</Text>
+                       <Text>{somme} Ar</Text>
+
+                    </View>
+                  
+                    
+                    
+
+                       
+                       
+                       
+                       
                 <MyBouton text={"Valider"} onPress={validation}/>
 
                   </ImageBackground>
