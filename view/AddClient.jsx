@@ -10,6 +10,7 @@ import{MyBouton} from "../components/MyBouton"
 import { useActionState, useState } from "react";
 import { addClient } from "../services/database";
 import { useUser } from "./UserContext";
+import { showToast } from "../services/utilitaire";
 
 export function AddClient(){
     const nav = useNavigation();
@@ -24,7 +25,12 @@ export function AddClient(){
       //gestion local
       const value = addClient(myUser.id,name,phone);
       console.log(value);
-      nav.navigate("dashboard")
+      
+      showToast(`Le client ${name} a été ajouté`);
+       setTimeout(() => {
+      nav.navigate("dashboard");
+    }, 400); 
+
 
 
       //gestion supabse

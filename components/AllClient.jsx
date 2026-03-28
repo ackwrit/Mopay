@@ -8,10 +8,13 @@ import { useCallback, useEffect, useState } from "react";
 import { MyCardClient } from "./MyCardClient";
 
 export function AllClient(){
+    const [search,setSearch] = useState("");
     const [clients,setclients] = useState([]);
+    
     useFocusEffect(
         useCallback(()=>{
               getAllClient();
+           
 
         },[])
 
@@ -28,6 +31,11 @@ export function AllClient(){
         setclients(data);
         console.log(data);
     }
+    const filtreClient = clients.filter((item)=> (item.name.toLowerCase()).includes(search.toLowerCase()));
+
+  
+
+    
     return(
         <View style={styleAllClient.container}>
             <View style={styleAllClient.header}>
@@ -44,16 +52,20 @@ export function AllClient(){
 
                 </View>
                 
-                <MyTextInput text={"Rechercher un client ..."} icon={"search"}/>
+                <MyTextInput text={"Rechercher un client ..."} icon={"search"} onChanged={(value)=> setSearch(value)}/>
 
             </View>
             <View style={styleAllClient.scroll}>
                 <ScrollView >
                     {
-                        clients.map((item,index)=>{
+                        filtreClient.length === 0 ?(
+                            <Text>Aucun client trouvé</Text>
+                        )
+
+                        : (filtreClient.map((item,index)=>{
                             return <MyCardClient key={item.id || index} client={item}/>
 
-                        })
+                        }))
                     }
                    
 

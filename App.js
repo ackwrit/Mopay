@@ -12,6 +12,9 @@ import AsyncStorage from 'expo-sqlite/kv-store';
 import { MyUser } from './model/MyUser';
 import { addClient, addInvoice, getLastInvoices, initDB } from './services/database';
 import { AddClient } from './view/AddClient';
+import Toast, { SuccessToast } from 'react-native-toast-message';
+import { View ,Image,Text} from 'react-native';
+import logo from './assets/logo.png'
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -85,8 +88,46 @@ async function checkLocal(){
 
  if(isLoading){
   return (
+
     <UserProvider>
     <NavigationContainer theme={navTheme}>
+      <Toast config={{
+          success:({text1,...rest})=>(
+            <View style={{
+              backgroundColor:"#F5BB0E",
+              flexDirection:'row',
+              borderRadius:20,
+              borderWidth:1,
+              borderColor :"black",
+              opacity : 1,
+              height : 60,
+              width :"80%",
+              alignItems :"center",
+              paddingHorizontal: 10,      // espace intérieur
+              shadowColor: "#000",        // ajoute une ombre pour mieux voir
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              }}>
+                <View style={{
+                  width:40,
+                  height:40,
+                  justifyContent:"center",
+                  alignItems:"center",
+                  borderRadius:60,
+                  backgroundColor:"white",
+                  marginRight : 10
+                  }}>
+                    <Image resizeMode="contain" source={logo} style={{height:40,width:40}}/>
+                </View>
+                <Text>{text1}</Text>
+                
+
+            </View>
+          )
+        }
+      }/>
       <Stack.Navigator initialRouteName={(isExistLocal)?'dashboard':'splash'} screenOptions={{headerShown:false,animation:"fade"}}>
         <Stack.Screen name='splash' component={Mysplashscreen}></Stack.Screen>
         <Stack.Screen name='register' component={Register}></Stack.Screen>
