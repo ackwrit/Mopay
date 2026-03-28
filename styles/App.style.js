@@ -194,6 +194,38 @@ const styles = StyleSheet.create({
     borderColor :"black",
     borderWidth : 1,
     alignItems : "center"
+  },
+
+  header_Addinvoice :{
+    marginTop : 80,
+    flexDirection : "row",
+    alignItems :"baseline",
+    
+
+  },
+
+  containerAddInvoice:{
+    height : 80,
+    width :"100%",
+
+    backgroundColor : "white",
+    borderRadius : 20,
+    borderWidth : 1,
+    borderColor :"black",
+    padding : 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+    width: 0,
+    height: 3,
+    },
+    shadowOpacity:  0.18,
+    shadowRadius: 4.59,
+    elevation: 5,
+    flexDirection :"row",
+    alignItems :"center",
+    justifyContent :"space-between"
+
+
   }
 
 

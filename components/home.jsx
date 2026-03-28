@@ -8,6 +8,7 @@ import { useUser } from "../view/UserContext";
 import { MyUser } from "../model/MyUser";
 import { getLastInvoices ,getClients} from "../services/database";
 import { MyLabelhistory } from "./MyLabelhistory";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -16,6 +17,7 @@ export function MyHome(){
         const {myUser,setMyUser} = useUser();
         const [dataFacture,setdataFacture]= useState([]);
         const [mergeInvoice,setmergeInvoice]= useState([]);
+        const nav = useNavigation();
         useEffect(()=>{
             getLocal();
         
@@ -73,13 +75,23 @@ export function MyHome(){
         const limitedList = mergeInvoice.slice(0,10);
 
 
+        function navigationInvoice(){
+            nav.navigate("addinvoice");
+
+        }
+        function navigationHistory(){
+            nav.navigate("allhistory");
+
+        }
+
+
     return (
     <View style={{flex:1,  alignItems:"center"}}>
             <Image style={styles.logo}source={logo}/>
             
             <View style={styles.bloc_dashboard}>
                 <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName ?? ""}</Text>
-                <MySummaryButton/>
+                <MySummaryButton onPressedFact={navigationInvoice} onPressedHis={navigationHistory}/>
                 <View style={styles.typepaimeentContainer}>
                     <MyButtonTypePaiement icone={"qr-code"}/>
                     <MyButtonTypePaiement icone={"wifi-outline"}/>

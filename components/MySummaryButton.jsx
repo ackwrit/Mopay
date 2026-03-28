@@ -3,12 +3,12 @@ import { stylesSummaryButton } from "./MySummaryButton.style";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export function MySummaryButton({onPressed}){
+export function MySummaryButton({onPressedHis,onPressedFact}){
     return (
         <View style={stylesSummaryButton.container}>
             <View style={stylesSummaryButton.element_start}>
                 
-                    <TouchableOpacity onPress={onPressed}>
+                    <TouchableOpacity onPress={onPressedHis}>
                        <View style={stylesSummaryButton.element_cercle}>
                     <Ionicons name="trending-up" size={50} color={"white"}/>
 
@@ -25,7 +25,7 @@ export function MySummaryButton({onPressed}){
 
             </View>
             
-                  <TouchableOpacity onPress={onPressed}>
+                  <TouchableOpacity onPress={onPressedFact}>
                 <View style={stylesSummaryButton.element_cercle_right}>
                     <Ionicons name="add" size={50} color={"white"}/>
 

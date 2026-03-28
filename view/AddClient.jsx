@@ -43,7 +43,7 @@ export function AddClient(){
         <ImageBackground source={background} imageStyle={{opacity:0.4}} style={styles.ImageBackground}>
               <TouchableOpacity onPress={backDashboard}>
                 <View style={styles.header_Addclient}>
-                <FontAwesome name="chevron-left" size={24} />
+                <FontAwesome name="angle-left" size={24} />
                 <Text style={{fontSize:24,fontWeight:"condensedBold",marginLeft:10}}>Clients</Text>
               </View>
 

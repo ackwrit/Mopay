@@ -15,6 +15,8 @@ import { AddClient } from './view/AddClient';
 import Toast, { SuccessToast } from 'react-native-toast-message';
 import { View ,Image,Text} from 'react-native';
 import logo from './assets/logo.png'
+import { AddInvoices } from './view/AddInvoices';
+import { AllHistory } from './view/AllHistory';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -135,6 +137,8 @@ async function checkLocal(){
          <Stack.Screen name='confirm' component={Verificationmail}></Stack.Screen>
          <Stack.Screen name='dashboard' component={Dashboard}></Stack.Screen>
          <Stack.Screen name='addclient' component={AddClient}></Stack.Screen>
+         <Stack.Screen name='addinvoice' component={AddInvoices}></Stack.Screen>
+         <Stack.Screen name='allhistory' component={AllHistory}></Stack.Screen>
 
 
       </Stack.Navigator>
