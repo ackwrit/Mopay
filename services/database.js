@@ -20,7 +20,8 @@ export const initDB =  ()=> {
         userId TEXT,
         name TEXT,
         phone TEXT,
-        token TEXT
+        token TEXT,
+        created_at TEXT
       );`);
       db.execSync(
           `CREATE TABLE IF NOT EXISTS invoices (

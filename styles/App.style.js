@@ -167,6 +167,33 @@ const styles = StyleSheet.create({
     flexDirection : "row",
     marginTop : 70,
     alignItems :"center"
+  },
+
+  containerAvatarClientAdd : {
+    alignItems : "center",
+    
+
+  },
+
+  avatarClientAdd : {
+    height : 200,
+    width : 200,
+
+  },
+  textformAddclient:{
+    flex : 1,
+    
+
+  },
+  containerAddclientTextform : {
+    flexDirection :"row",
+    backgroundColor : "white",
+    padding : 10,
+    marginVertical : 10,
+    borderRadius : 20,
+    borderColor :"black",
+    borderWidth : 1,
+    alignItems : "center"
   }
 
 
