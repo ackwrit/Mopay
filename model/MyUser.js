@@ -71,6 +71,7 @@ export class MyUser {
           );
           if(insertEror) throw insertEror
           await this.save();
+          return data;
           
 
     }
@@ -87,6 +88,7 @@ export class MyUser {
          this.token = data.session.access_token;
 
           await this.save();
+          return data;
           
          
         } catch (e){

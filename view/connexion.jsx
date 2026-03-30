@@ -25,8 +25,10 @@ export function Connexion() {
   async function connexionBdd(){
     const newUser = new MyUser({...myUser});
     const value = await newUser.connect(mailTapped,passTapped);
-    setMyUser(myUser);
+    
+    
     if(value){
+      setMyUser(newUser);
       nav.navigate('dashboard');
 
     }
@@ -51,7 +53,7 @@ export function Connexion() {
         
         <View>
           <MyTextInput onChanged={setMailTapped}text={"Entrer votre mail"} icon={"envelope"} ></MyTextInput>
-          <MyTextInput onChanged={setPassTapped} text={"Entrer votre mot de passe"} icon={"lock"} ></MyTextInput>
+          <MyTextInput security = {true} onChanged={setPassTapped} text={"Entrer votre mot de passe"} icon={"lock"} ></MyTextInput>
           
         </View>
         

@@ -69,9 +69,13 @@ En continuant, vous acceptez les Conditions d’Utilisation de MoPay.`,[
     if(isFormValid){
      try {
        const newUser = new MyUser({...myUser,mail:email});
-       await newUser.register(password);
-       setMyUser(newUser);
+       const value  = await newUser.register(password);
+       if(value){
+        setMyUser(newUser);
        nav.navigate('dashboard');
+
+       }
+       
 
 
      } catch(erreur){
@@ -96,8 +100,8 @@ En continuant, vous acceptez les Conditions d’Utilisation de MoPay.`,[
         
         <View>
           <MyTextInput text={"Entrer votre mail"} icon={"envelope"} onChanged={setEmail} value={email}></MyTextInput>
-          <MyTextInput text={"Entrer votre mot de passe"} icon={"lock"} onChanged={setPassword} value={password}></MyTextInput>
-          <MyTextInput text={"Confirmer votre mot de passe"} icon={"lock"} onChanged={setrePassword} value={repassword}></MyTextInput>
+          <MyTextInput security={true} text={"Entrer votre mot de passe"} icon={"lock"} onChanged={setPassword} value={password}></MyTextInput>
+          <MyTextInput security={true} text={"Confirmer votre mot de passe"} icon={"lock"} onChanged={setrePassword} value={repassword}></MyTextInput>
           {!isValidEmail(email)?<Text style={{color:"red",margin:2}}>Email inavlide</Text>:""}
           <Text style={{color:"red",margin:2}}>{longPassword}</Text>
           <Text style={{color:"red",margin:2}}>{errorPassword}</Text>
