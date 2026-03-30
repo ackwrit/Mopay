@@ -3,7 +3,7 @@ import { stylesSummaryButton } from "./MySummaryButton.style";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export function MySummaryButton({onPressedHis,onPressedFact}){
+export function MySummaryButton({onPressedHis,onPressedFact,sum}){
     return (
         <View style={stylesSummaryButton.container}>
             <View style={stylesSummaryButton.element_start}>
@@ -21,7 +21,7 @@ export function MySummaryButton({onPressedHis,onPressedFact}){
              
                 
               
-            <Text style={stylesSummaryButton.element_text}>300 000 Ar</Text>
+            <Text style={stylesSummaryButton.element_text}>{sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Ar</Text>
 
             </View>
             

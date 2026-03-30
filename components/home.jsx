@@ -3,12 +3,12 @@ import logo from "../assets/logo.png"
 import { styles } from "../styles/App.style";
 import { MySummaryButton } from "../components/MySummaryButton";
 import { MyButtonTypePaiement } from "../components/MyButtonTypePaiement";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUser } from "../view/UserContext";
 import { MyUser } from "../model/MyUser";
 import { getLastInvoices ,getClients} from "../services/database";
 import { MyLabelhistory } from "./MyLabelhistory";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 
 
@@ -18,19 +18,25 @@ export function MyHome(){
         const [dataFacture,setdataFacture]= useState([]);
         const [mergeInvoice,setmergeInvoice]= useState([]);
         const nav = useNavigation();
+        const [sum,setsum] = useState(0);
         useEffect(()=>{
             getLocal();
         
             
     
         },[]);
-    
-        useEffect(()=>{
+        useFocusEffect(
+              useCallback(()=>{
             const invoiceLocal =getData();
+            const s = invoiceLocal.reduce((acc,invoice)=>{
+                console.log(invoice.amount);
+                return acc + invoice.amount;
+
+            },0);
+            console.log("somme calculé : ",s);
+            setsum(s);
             const dataclientLocal = getClientLocal();
-            console.log("facture :",invoiceLocal);
-            
-            console.log("client :",dataclientLocal);
+           
         
              const clientsMap = Object.fromEntries(dataclientLocal.map(c => [c.id, c]));
             
@@ -41,14 +47,19 @@ export function MyHome(){
              }));
              setmergeInvoice(mergedData);
              console.log(mergedData);
+
+
             
     
     
-        },[]);
-        useEffect(()=>{
-            console.log('le tableau est modifié');
+        },[])
+
+        );
+
+       
     
-        },[mergeInvoice])
+      
+    
     
         async function getLocal() {
            const value = await MyUser.getStorage();
@@ -60,7 +71,7 @@ export function MyHome(){
         function getData(){
             const parserdata = getLastInvoices();
             setdataFacture(parserdata);
-            console.log("facture dans la fonction :",parserdata)
+           
             return parserdata;
            
             
@@ -91,7 +102,7 @@ export function MyHome(){
             
             <View style={styles.bloc_dashboard}>
                 <Text style={{marginBottom:10 ,fontSize:15}}>Bonjour {myUser.fullName ?? ""}</Text>
-                <MySummaryButton onPressedFact={navigationInvoice} onPressedHis={navigationHistory}/>
+                <MySummaryButton sum = {sum} onPressedFact={navigationInvoice} onPressedHis={navigationHistory}/>
                 <View style={styles.typepaimeentContainer}>
                     <MyButtonTypePaiement icone={"qr-code"}/>
                     <MyButtonTypePaiement icone={"wifi-outline"}/>

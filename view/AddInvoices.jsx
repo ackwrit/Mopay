@@ -3,12 +3,14 @@ import { styles } from "../styles/App.style";
 import background from '../assets/background.png'
 import { FontAwesome } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { getClients } from "../services/database";
+import { addArticle, addInvoice, getArticles, getClients, updateInvoice } from "../services/database";
 import { useCallback, useEffect, useState } from "react";
 import { MyCardClient } from "../components/MyCardClient";
 import { MyTextButton } from "../components/MyTextButton";
 import {MyBouton} from "../components/MyBouton";
 import {MyTextInput} from "../components/MyTextInput"
+import { useUser } from "./UserContext";
+import { Alert } from "react-native";
 
 export function AddInvoices(){
     const nav = useNavigation();
@@ -18,38 +20,70 @@ export function AddInvoices(){
     const [modalVisible,setModalVissible] = useState(false);
     const [listeArticle,setlisteArticle] = useState([]);
     const [somme,setSomme] = useState();
+    const remise = 1.7;
+    const [percentRemise,setPercentRemise]=useState(0);
+    const [subsumTotalFacture,setsubsumTotalFacture]=useState(0);
+     const [sumTotalFacture,setsumTotalFacture]=useState(0);
     const [name,setname] =useState();
     const [prix,setprix] = useState(0);
+    const {myUser,setMyUser} = useUser();
+    const [invoiceId,setInvoiceId] = useState();
+    const [passage,setPassage] = useState(true);
 
     const [quantite,setquantite] =useState(1);
   
     
     
     
-    useFocusEffect(
-        useCallback(()=>{
-            AllClients();
+    
+        useEffect(()=>{
+        const clientsDB = getClients();
+        setlistclient(clientsDB);
+      
 
-        },[])
+        if(clientsDB && clientsDB.length > 0){
+           const premierClient = clientsDB[0];
+           setselectedClient(premierClient);
 
-    );
+           // Créer la facture maintenant que le client est défini
+           if(passage){
+            const invoiceIdTemp = addInvoice(myUser.id, premierClient.id, 0, "pending", 0);
+           setInvoiceId(invoiceIdTemp);
+           setPassage(true);
+            console.log("Facture créée avec id avec temp:", invoiceIdTemp);
+
+           }
+           
+           
+          
+        }
+        else {
+            Alert.alert(
+                "Aucun client",
+                "Vous n'avez enregistrer aucun client, merci d'ajouter un client",
+                [
+                    {
+                        text :"Ok",
+                        onPress : ()=> {nav.navigate("addclient")}
+                    }
+                ]
+            )
+        }
+
+        },[passage])
+
+    
+
+    useEffect(()=>{
+        getAllArticles();
+    },[])
 
     function back(){
         nav.goBack();
 
     }
 
-    function AllClients(){
-        const clientsDB = getClients();
-        setlistclient(clientsDB);
-        if(clientsDB !==null){
-           setselectedClient(clientsDB[0]);
 
-        }
-
-        
-       
-    }
 
     function selectionClient(client){
         setOpen(false);
@@ -59,19 +93,51 @@ export function AddInvoices(){
     }
 
     function validation(){
+         console.log("Facture créée avec id  normal dans validation:", invoiceId);
+        
+        
+        addArticle(myUser.id,name,quantite,prix,invoiceId)
         setModalVissible(false);
-    }
-     function sommeTotal(){
-        const q = parseInt(quantite);
-        const p = parseInt(prix);
-        const sum = q * p;
-        setSomme(sum);
+      
 
-     }
+        getAllArticles();
+    }
+
+    function getAllArticles(){
+        console.log("Facture créée avec id  normal:", invoiceId);
+        const value = getArticles(invoiceId);
+        
+        setlisteArticle(value);
+        console.log("article",value);
+           // Calculer la somme totale
+            const total = value.reduce((acc, article) => acc + (article.amount * article.quantite), 0);
+            setsubsumTotalFacture(total);
+            const calculRemise = Math.round(total * remise / 100);
+            setPercentRemise(calculRemise);
+            const globalSum = total - calculRemise;
+            setsumTotalFacture(globalSum);
+    }
+
+    function createInvoice(){
+        
+        
+        console.log(subsumTotalFacture);
+        console.log()
+       
+        
+       
+        
+        updateInvoice(invoiceId,{"clientId":selectClient.id,"amount":subsumTotalFacture,"isFinished":1});
+        nav.navigate("dashboard");
+
+    }
+ 
 
     
 
     return (
+        //modal
+
         <ImageBackground source={background} imageStyle={{opacity:0.4}} style={{flex:1,padding:10}}>
             <Modal visible={modalVisible} animationType="slide" >
                   <ImageBackground source={background} style={{flex:1,alignItems:"center",padding:10,justifyContent:"center"}} imageStyle={{opacity:0.4}}>
@@ -124,7 +190,6 @@ export function AddInvoices(){
                         width:"100%",
                         marginTop:20,
                         backgroundColor:"white",
-                        height :60,
                         padding : 10,
                         marginBottom : 20,
                         borderColor :"black",
@@ -150,6 +215,8 @@ export function AddInvoices(){
              
 
             </Modal>
+            
+
             <TouchableOpacity onPress={back}>
                  <View style={styles.header_Addinvoice}>
                 <FontAwesome name="angle-left" size={30} style={{marginRight:5}}/>
@@ -222,7 +289,30 @@ export function AddInvoices(){
                 </View>
                 <View style={{height:"40%",padding:10,marginBottom:5}}>
                     <ScrollView>
-                        <Text>List des services</Text>
+                        {
+                            listeArticle.map((item,index)=>{
+                                return <View key={item.id|| index} style={
+                                    {
+                                        flexDirection :"row",
+                                        justifyContent :"space-between",
+                                        alignItems :"center",
+                                        backgroundColor :"white",
+                                        margin : 5,
+                                        paddingHorizontal : 5,
+                                       
+                                        borderRadius : 15,
+                                        borderColor :"black",
+                                        borderWidth : 1,
+                                        height : 60
+                                        
+                                    }
+                                }>
+                                    <Text>{item.name}</Text>
+                                    <Text>{item.amount * item.quantite} Ar</Text>
+                                </View>
+
+                            })
+                        }
 
                     </ScrollView>
                     
@@ -241,17 +331,17 @@ export function AddInvoices(){
                     }}>
                     <View style={{flexDirection:"row",justifyContent:"space-between"}}>
                         <Text style={{color:"grey"}}>Sous total</Text>
-                        <Text>montant Ar</Text>
+                        <Text>{subsumTotalFacture} Ar</Text>
 
                     </View>
                     <View style={{flexDirection:"row",justifyContent:"space-between"}}>
                         <Text style={{color:"grey"}}>Frais de service</Text>
-                        <Text>montant Ar</Text>
+                        <Text>{percentRemise} Ar</Text>
 
                     </View>
                     <View style={{flexDirection:"row",justifyContent:"space-between"}}>
                         <Text>Total à payer</Text>
-                        <Text>montant Ar</Text>
+                        <Text>{subsumTotalFacture} Ar</Text>
 
                     </View>
                     
@@ -259,7 +349,7 @@ export function AddInvoices(){
                     
                 </View>
                 <View style={{width :"100%",alignItems:"center",marginTop:10}}>
-                    <MyBouton text={"Créer la facture"}/>
+                    <MyBouton text={"Créer la facture"} onPress={createInvoice}/>
 
                 </View>
                 <View style={{
@@ -278,7 +368,7 @@ export function AddInvoices(){
                         
 
                     
-                    <Text style={{marginLeft:5,color:"white"}}>Recevez montant Ar sur votre compte mobile</Text>
+                    <Text style={{marginLeft:5,color:"white"}}>Recevez {sumTotalFacture} Ar sur votre compte mobile</Text>
                     
                 </View>
 

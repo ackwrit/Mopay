@@ -6,7 +6,9 @@ import { styleLabelHistory } from "./MyLabelhistory.style";
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
   const year = date.getFullYear();
+  console.log("somme",items);
   return `${day}/${month}/${year}`;
+  
 };
     return (
         <View style={styleLabelHistory.container}>
@@ -14,7 +16,7 @@ import { styleLabelHistory } from "./MyLabelhistory.style";
                 <Text style={styleLabelHistory.nameText}>{items.clientName}</Text>
                 <Text style={styleLabelHistory.statusText}>{(items.status === "pending")?"Argent en cours":"Argent reçu"}</Text>
             </View>
-            <View>
+            <View style={{alignItems:"flex-end"}}>
                 <Text style={styleLabelHistory.amoutText}>{items.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Ar</Text>
                 <Text style={styleLabelHistory.nameText}>{formatDate(items.createdAt)}</Text>
             </View>

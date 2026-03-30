@@ -31,9 +31,24 @@ export const initDB =  ()=> {
         amount REAL,
         status TEXT,
         createdAt TEXT,
+        isFinished INTEGER DEFAULT 0,
         FOREIGN KEY(clientId) REFERENCES clients(id) ON DELETE CASCADE
       );`
+     
 
+      );
+       db.execSync(
+        `CREATE TABLE IF NOT EXISTS articles(
+          id TEXT PRIMARY KEY,
+          userId TEXT,
+          name TEXT,
+          amount REAL,
+          quantite INTEGER,
+          idFacture TEXT,
+          FOREIGN KEY(idFacture) REFERENCES invoices(id) ON DELETE CASCADE 
+        
+        );`
+        
       );
      
         
@@ -58,13 +73,30 @@ export const addClient = (userId, name, phone) => {
  
   return clientId;
 };
+export const addArticle =(userId,name,quantite,amount,idFacture)=>{
+  const articleId = uuid.v4();
+  db.execSync(
+    `INSERT INTO articles (id, userId, name, amount,quantite,idFacture) VALUES ('${articleId}', '${userId}', '${name}', '${amount}','${quantite}','${idFacture}');`
+
+  );
+
+
+
+
+}
+
+
+  export const getArticles =(idFacture)=>{
+    return db.getAllSync(`SELECT * FROM articles where idFacture ='${idFacture}'`);
+
+  } 
 
 // Ajouter une facture
-export const addInvoice = (userId, clientId, amount, status = 'pending') => {
+export const addInvoice = (userId, clientId, amount, status = 'pending',isFinished = 0) => {
   const invoiceId = uuid.v4();
   const createdAt = new Date().toISOString();
   db.execSync(
-    `INSERT INTO invoices (id, userId, clientId, amount, status, createdAt) VALUES ('${invoiceId}', '${userId}', '${clientId}', '${amount}', '${status}', '${createdAt}');`
+    `INSERT INTO invoices (id, userId, clientId, amount, status, createdAt,isFinished) VALUES ('${invoiceId}', '${userId}', '${clientId}', '${amount}', '${status}', '${createdAt}' ,'${isFinished}');`
   );
 
  
@@ -105,6 +137,15 @@ export const deleteClient = (clientId) => {
       [clientId]
     );
   });
+};
+
+export const updateInvoice = (invoiceId, fieldsToUpdate) => {
+    // fieldsToUpdate = { status: "finished", amount: 1200 }
+    const updates = Object.entries(fieldsToUpdate)
+        .map(([key, value]) => `${key} = '${value}'`) // attention aux nombres vs string
+        .join(", ");
+
+    db.execSync(`UPDATE invoices SET ${updates} WHERE id = '${invoiceId}';`);
 };
 
 export default db;

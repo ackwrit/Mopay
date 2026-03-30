@@ -10,7 +10,8 @@ export const styleLabelHistory = StyleSheet.create({
     nameText : {
         fontSize : 12,
         color : "black",
-        fontWeight : "medium"
+        fontWeight : "medium",
+        
 
     },
     statusText:{
