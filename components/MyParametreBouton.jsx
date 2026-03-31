@@ -1,10 +1,11 @@
-import { View,Text } from "react-native";
+import { View,Text, TouchableOpacity } from "react-native";
 import { styleSettingsButton } from "./MyParametreBouton.style";
 import { FontAwesome } from "@expo/vector-icons";
 
-export function MyParametreBouton({icone,title,message}){
+export function MyParametreBouton({icone,title,message,onPress}){
     return (
-        <View style={styleSettingsButton.container}>
+        <TouchableOpacity onPress={onPress}>
+               <View style={styleSettingsButton.container}>
             <View style={styleSettingsButton.leading}>
                 <FontAwesome name={icone} size={28}/>
                 <View style={styleSettingsButton.blocProfil}>
@@ -18,6 +19,9 @@ export function MyParametreBouton({icone,title,message}){
            
 
         </View>
+
+        </TouchableOpacity>
+     
 
     );
 }

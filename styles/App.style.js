@@ -203,6 +203,13 @@ const styles = StyleSheet.create({
     
 
   },
+   header_myprofil :{
+    marginTop : 80,
+    flexDirection : "row",
+    alignItems :"baseline",
+    
+
+  },
 
   containerAddInvoice:{
     height : 80,

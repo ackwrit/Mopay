@@ -3,11 +3,12 @@ import { styleSettings } from "./MySettings.style";
 import { MyParametreBouton } from "./MyParametreBouton";
 import { useUser } from "../view/UserContext";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export function MySettings(){
     const {myUser,setMyUser} = useUser();
     const [tel,setTel] = useState("");
-
+    const nav = useNavigation();
     useEffect(()=>{
        checkPhone();
         
@@ -25,6 +26,31 @@ export function MySettings(){
 
     }
 
+    function navigation(choix){
+        const value = choix;
+        if(value === 'user'){
+            nav.navigate("myprofil");
+
+        }
+         if(value === 'suitcase'){
+            nav.navigate("myprofil");
+
+        }
+         if(value === 'mobile'){
+            nav.navigate("myprofil");
+
+        }
+         if(value === 'shield'){
+            nav.navigate("myprofil");
+
+        }
+         if(value === 'info'){
+            nav.navigate("myprofil");
+
+        }
+
+    }
+
     
     return (
 
@@ -33,9 +59,9 @@ export function MySettings(){
             <Text style={styleSettings.title}>Paramètres</Text>
         
         <View style={styleSettings.box}>
-            <MyParametreBouton icone={"user"} title={"Profil"} message={`${myUser.fullName} ${tel}`}/>
+            <MyParametreBouton onPress={()=>{navigation('user')}}icone={"user"} title={"Profil"} message={`${myUser.fullName} ${tel}`}/>
             <MyParametreBouton icone={"suitcase"} title={"Information de l'entreprise"} message={"Nom entreprise"}/>
-            <MyParametreBouton icone={"mobile"} title={"compte mobile lié"} message={"Nom entreprise"}/>
+            <MyParametreBouton icone={"mobile"} title={"compte mobile lié"} message={`${tel}`}/>
             <MyParametreBouton icone={"shield"} title={"Sécurité"} message={"Mot de passe"}/>
             <MyParametreBouton icone={"info"} title={"CGU"}/>
 

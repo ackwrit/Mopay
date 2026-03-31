@@ -17,6 +17,7 @@ import { View ,Image,Text} from 'react-native';
 import logo from './assets/logo.png'
 import { AddInvoices } from './view/AddInvoices';
 import { AllHistory } from './view/AllHistory';
+import { MyProfil } from './view/MyProfil';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -140,6 +141,7 @@ async function checkLocal(){
          <Stack.Screen name='addinvoice' component={AddInvoices}></Stack.Screen>
          <Stack.Screen name='allhistory' component={AllHistory}></Stack.Screen>
          <Stack.Screen name='settings' component={AllHistory}></Stack.Screen>
+         <Stack.Screen name='myprofil' component={MyProfil}></Stack.Screen>
 
 
       </Stack.Navigator>
