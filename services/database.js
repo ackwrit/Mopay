@@ -107,7 +107,7 @@ export const addInvoice = (userId, clientId, amount, status = 'pending',isFinish
 export const getLastInvoices = () => {
   
   
-   return db.getAllSync('SELECT * FROM invoices ORDER BY createdAt DESC LIMIT 100');
+   return db.getAllSync('SELECT * FROM invoices ORDER BY createdAt DESC');
    
 
 
