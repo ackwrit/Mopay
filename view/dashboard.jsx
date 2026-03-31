@@ -11,6 +11,7 @@ import { Connexion } from "./connexion";
 import { MyHome } from "../components/home";
 import { AllClient } from "../components/AllClient";
 import { AllHistory } from "../components/AllHistory";
+import { MySettings } from "../components/MySettings";
 
 
 
@@ -44,7 +45,7 @@ export function Dashboard(){
           <Tab.Screen name="Accueil" component={MyHome} />
         <Tab.Screen name="Historique" component={AllHistory} />
         <Tab.Screen name="Clients" component={AllClient} />
-        <Tab.Screen name="Paramètre" component={Connexion}/>
+        <Tab.Screen name="Paramètre" component={MySettings}/>
       </Tab.Navigator>
       </ImageBackground>
 

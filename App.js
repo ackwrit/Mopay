@@ -139,6 +139,7 @@ async function checkLocal(){
          <Stack.Screen name='addclient' component={AddClient}></Stack.Screen>
          <Stack.Screen name='addinvoice' component={AddInvoices}></Stack.Screen>
          <Stack.Screen name='allhistory' component={AllHistory}></Stack.Screen>
+         <Stack.Screen name='settings' component={AllHistory}></Stack.Screen>
 
 
       </Stack.Navigator>

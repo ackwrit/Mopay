@@ -1,7 +1,7 @@
 import { View,Text, ScrollView, TouchableOpacity } from "react-native";
 import { styleAllHistory } from "./AllHistory.style";
 import {Ionicons } from "@expo/vector-icons";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { getClients, getLastInvoices } from "../services/database";
 import { useFocusEffect } from "@react-navigation/native";
 import { BoxHistory } from "./BoxHistory";
