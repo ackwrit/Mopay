@@ -31,13 +31,13 @@ export function MyNumberMobile(){
     function validation(){
         const value = myUser;
         if(messageTapped !== ""){
-            setMyUser({
+            const updateUser = new MyUser({
                 ...value,
                 "phone":messageTapped
         });
-        console.log("user dans enregistrer",myUser);
-        setmonUser({myUser});
-        monuser.save();
+        console.log("user dans enregistrer",updateUser);
+        setmonUser(updateUser);
+        updateUser.save();
 
         comeback();
 

@@ -7,10 +7,12 @@ import { useUser } from "./UserContext";
 import { useEffect, useState } from "react";
 import { MyTextInput } from "../components/MyTextInput";
 import { useNavigation } from "@react-navigation/native";
+import { MyUser } from "../model/MyUser";
 
 export function MyProfil(){
      const {myUser,setMyUser} = useUser();
      const [press,setPress]= useState(false);
+     const [monUtilisateur,setmonUtilisateur]=useState(new MyUser({}));
      const [messageTapped,setmessageTapped] = useState();
      const nav = useNavigation();
      useEffect(()=>{
@@ -24,9 +26,22 @@ export function MyProfil(){
      }
 
      function modification(){
+        const value = myUser;
         if(messageTapped !== ""){
-            const value = myUser
-            setMyUser({...value,fullName:messageTapped});
+            setMyUser({
+                ...value,fullName:messageTapped
+            }
+
+            );
+            
+            const updateUser = new MyUser({
+                ...value,fullName:messageTapped
+
+            });
+            setmonUtilisateur(updateUser);
+            
+            updateUser.save();
+
             retour();
             
         }
