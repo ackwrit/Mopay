@@ -12,16 +12,17 @@ import { MyUser } from "../model/MyUser";
 
 export function MyNumberMobile(){
     const {myUser,setMyUser} = useUser();
-    const [monuser,setmonUser] = new MyUser({});
+    const [monuser,setmonUser] = useState(new MyUser({}));
     const [messageTapped,setmessageTapped] = useState();
     const nav = useNavigation();
     const [press,setPress] = useState(false);
     
     useEffect(()=>{
-        console.log(myUser);
+        setmessageTapped(myUser.phone);
+        console.log("user use effect",myUser);
        
 
-    },[myUser]);
+    },[]);
     function comeback(){
         nav.goBack();
 
@@ -34,6 +35,7 @@ export function MyNumberMobile(){
                 ...value,
                 "phone":messageTapped
         });
+        console.log("user dans enregistrer",myUser);
         setmonUser({myUser});
         monuser.save();
 
