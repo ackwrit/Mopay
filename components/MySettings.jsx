@@ -37,7 +37,7 @@ export function MySettings(){
 
         }
          if(value === 'mobile'){
-            nav.navigate("myprofil");
+            nav.navigate("mynumbermobile");
 
         }
          if(value === 'shield'){
@@ -61,7 +61,7 @@ export function MySettings(){
         <View style={styleSettings.box}>
             <MyParametreBouton onPress={()=>{navigation('user')}}icone={"user"} title={"Profil"} message={`${myUser.fullName} ${tel}`}/>
             <MyParametreBouton icone={"suitcase"} title={"Information de l'entreprise"} message={"Nom entreprise"}/>
-            <MyParametreBouton icone={"mobile"} title={"compte mobile lié"} message={`${tel}`}/>
+            <MyParametreBouton onPress={()=>{navigation('mobile')}}icone={"mobile"} title={"compte mobile lié"} message={`${tel}`}/>
             <MyParametreBouton icone={"shield"} title={"Sécurité"} message={"Mot de passe"}/>
             <MyParametreBouton icone={"info"} title={"CGU"}/>
 

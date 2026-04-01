@@ -14,7 +14,7 @@ export function MyProfil(){
      const [messageTapped,setmessageTapped] = useState();
      const nav = useNavigation();
      useEffect(()=>{
-        setmessageTapped(myUser.fullName)
+        
 
      },[])
 

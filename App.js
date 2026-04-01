@@ -18,6 +18,7 @@ import logo from './assets/logo.png'
 import { AddInvoices } from './view/AddInvoices';
 import { AllHistory } from './view/AllHistory';
 import { MyProfil } from './view/MyProfil';
+import { MyNumberMobile } from './view/MyNumberMobile';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -142,6 +143,7 @@ async function checkLocal(){
          <Stack.Screen name='allhistory' component={AllHistory}></Stack.Screen>
          <Stack.Screen name='settings' component={AllHistory}></Stack.Screen>
          <Stack.Screen name='myprofil' component={MyProfil}></Stack.Screen>
+           <Stack.Screen name='mynumbermobile' component={MyNumberMobile}></Stack.Screen>
 
 
       </Stack.Navigator>
