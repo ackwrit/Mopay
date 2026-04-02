@@ -3,7 +3,7 @@ import { styles } from "../styles/App.style";
 import background from '../assets/background.png'
 import { FontAwesome } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { addArticle, addInvoice, getArticles, getClients, updateInvoice } from "../services/database";
+import { addArticle, addInvoice, getArticles, getClients, updateArticle, updateInvoice } from "../services/database";
 import { useCallback, useEffect, useState } from "react";
 import { MyCardClient } from "../components/MyCardClient";
 import { MyTextButton } from "../components/MyTextButton";
@@ -11,8 +11,13 @@ import {MyBouton} from "../components/MyBouton";
 import {MyTextInput} from "../components/MyTextInput"
 import { useUser } from "./UserContext";
 import { Alert } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+import { addArticleSupabase, addInvoiceSupabase } from "../services/userService";
+
+
 
 export function AddInvoices(){
+      
     const nav = useNavigation();
     const [selectClient,setselectedClient]= useState();
     const [listclient,setlistclient] = useState([]);
@@ -29,6 +34,8 @@ export function AddInvoices(){
     const {myUser,setMyUser} = useUser();
     const [invoiceId,setInvoiceId] = useState();
     const [passage,setPassage] = useState(true);
+   
+
 
     const [quantite,setquantite] =useState(1);
   
@@ -92,19 +99,32 @@ export function AddInvoices(){
 
     }
 
-    function validation(){
-         console.log("Facture créée avec id  normal dans validation:", invoiceId);
+    async function validation(){
+        
+
+
+
+         const netState = await NetInfo.fetch();
         
         
-        addArticle(myUser.id,name,quantite,prix,invoiceId)
+        
+        const idArticle = addArticle(myUser.id,name,quantite,prix,invoiceId)
         setModalVissible(false);
+        //intégrer dans la base supabase
+        console.log("réseau",netState);
+        if (netState.isConnected && netState.isInternetReachable === true){
+            updateArticle(idArticle,{"isFinished":1})
+            addArticleSupabase(idArticle,myUser.id,prix,name,quantite,invoiceId);
+
+        }
+
       
 
         getAllArticles();
     }
 
     function getAllArticles(){
-        console.log("Facture créée avec id  normal:", invoiceId);
+        
         const value = getArticles(invoiceId);
         
         setlisteArticle(value);
@@ -118,7 +138,8 @@ export function AddInvoices(){
             setsumTotalFacture(globalSum);
     }
 
-    function createInvoice(){
+    async function createInvoice(){
+        const netState = await NetInfo.fetch();
         
         
         console.log(subsumTotalFacture);
@@ -127,7 +148,12 @@ export function AddInvoices(){
         
        
         
-        updateInvoice(invoiceId,{"clientId":selectClient.id,"amount":subsumTotalFacture,"isFinished":1});
+        updateInvoice(invoiceId,{"clientId":selectClient.id,"amount":subsumTotalFacture,"isFinished":0});
+        if(netState.isConnected && netState.isInternetReachable === true){
+            updateInvoice(invoiceId,{"isFinished":1});
+            addInvoiceSupabase(invoiceId,myUser.id,selectClient.id,subsumTotalFacture,"pending")
+
+        }
         nav.navigate("dashboard");
 
     }

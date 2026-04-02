@@ -19,6 +19,7 @@ import { AddInvoices } from './view/AddInvoices';
 import { AllHistory } from './view/AllHistory';
 import { MyProfil } from './view/MyProfil';
 import { MyNumberMobile } from './view/MyNumberMobile';
+import { supabase } from './services/supabase';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -63,6 +64,7 @@ export default function App() {
 
   const [isLoading,setIsLoadiang] = useState(false);
   const [isExistLocal,setIsExistLocal] = useState(false);
+  const session = supabase.auth.getSession();
  
 const navTheme = {
  colors : {

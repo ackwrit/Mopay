@@ -22,6 +22,57 @@ export async function addClientSupabase(userId,clientID,name,phone) {
     
 }
 
+export async function addArticleSupabase(idArticle,userId,amount,name,quantite,idFacture){
+    const {data,error} = await supabase.from("ARTICLES").insert([
+        {
+            
+            id :idArticle,
+            userID : userId,
+            name : name,
+            amount : amount,
+            quantite:quantite,
+            idFacture : idFacture
+
+        }
+        
+
+    ]);
+    if(error ){
+        console.log(error);
+    } else {
+        console.log("reussit");
+    }
+
+}
+
+export async function addInvoiceSupabase(idFacture,userId,clientId,amount,status){
+    const date = new Date();
+
+
+   
+        
+    const {data,error} = await supabase.from("FACTURES").insert([
+        {
+            
+            id :idFacture,
+            userId : userId,
+            clientId : clientId,
+            amount : amount,
+            status:status,
+            createdAt : date
+
+        }
+        
+
+    ]);
+    if(error ){
+        console.log(error);
+    } else {
+        console.log("reussit");
+    }
+
+}
+
       
       
       

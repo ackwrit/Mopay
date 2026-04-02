@@ -44,6 +44,7 @@ export const initDB =  ()=> {
           name TEXT,
           amount REAL,
           quantite INTEGER,
+          isFinished INTEGER DEFAULT 0,
           idFacture TEXT,
           FOREIGN KEY(idFacture) REFERENCES invoices(id) ON DELETE CASCADE 
         
@@ -79,6 +80,7 @@ export const addArticle =(userId,name,quantite,amount,idFacture)=>{
     `INSERT INTO articles (id, userId, name, amount,quantite,idFacture) VALUES ('${articleId}', '${userId}', '${name}', '${amount}','${quantite}','${idFacture}');`
 
   );
+  return articleId;
 
 
 
@@ -147,5 +149,16 @@ export const updateInvoice = (invoiceId, fieldsToUpdate) => {
 
     db.execSync(`UPDATE invoices SET ${updates} WHERE id = '${invoiceId}';`);
 };
+
+export const updateArticle = (articleId, fieldsToUpdate) => {
+    // fieldsToUpdate = { status: "finished", amount: 1200 }
+    const updates = Object.entries(fieldsToUpdate)
+        .map(([key, value]) => `${key} = '${value}'`) // attention aux nombres vs string
+        .join(", ");
+
+    db.execSync(`UPDATE invoices SET ${updates} WHERE id = '${articleId}';`);
+};
+
+
 
 export default db;
