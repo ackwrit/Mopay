@@ -28,42 +28,32 @@ export function MyProfil(){
 
      }
 
-     async function modification(){
-        const {data,err} = await supabase.auth.getSession;
-       
-        const value = myUser;
-        if(messageTapped !== ""){
-            const newValue = setMyUser({
-                ...value,fullName:messageTapped
-            }
+    async function modification(){
+    if(!messageTapped || messageTapped.trim() === "") return;
 
-            );
-            
-            const updateUsers = new MyUser({
-                ...value,fullName:messageTapped
+    const updatedUser = {
+        ...myUser,
+        fullName: messageTapped
+    };
 
-            });
-            setmonUtilisateur(updateUsers);
-            setmessageTapped(newValue);
-            
-            
-            updateUsers.save();
-            const netState = await NetInfo.fetch();
-            
-            
-            if(netState.isConnected && netState.isInternetReachable){
-                updateUserSupabase(myUser.id,
-                    {
-                        full_name : messageTapped
-                    }
-                )
-            }
+    // update state
+    setMyUser(updatedUser);
 
-            retour();
-            
-        }
+    // save local
+    const userObj = new MyUser(updatedUser);
+    await userObj.save();
 
-     }
+    // check connexion
+    const netState = await NetInfo.fetch();
+
+    if(netState.isConnected && netState.isInternetReachable){
+        await updateUserSupabase(updatedUser.id, {
+            full_name: messageTapped
+        });
+    }
+
+    retour();
+}
 
      function retour(){
         nav.goBack();

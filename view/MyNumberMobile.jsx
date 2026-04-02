@@ -43,7 +43,7 @@ export function MyNumberMobile(){
         setmonUser(updateUsers);
         updateUsers.save();
         if(netState.isConnected && netState.isInternetReachable === true){
-            updateUserSupabase(myUser.id,{
+            await updateUserSupabase(updateUsers.id,{
                 "phone" : parseInt(messageTapped)
             })
         }
