@@ -21,6 +21,7 @@ export const initDB =  ()=> {
         name TEXT,
         phone TEXT,
         token TEXT,
+        refresh_token TEXT,
         created_at TEXT
       );`);
       db.execSync(

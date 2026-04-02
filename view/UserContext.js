@@ -13,6 +13,28 @@ export const UserProvider = ({ children }) => {
 
 
 
+
+    async function restoreSession() {
+      const storedUser = await MyUser.getStorage();
+      
+  
+      if (storedUser?.token && storedUser?.refresh_token) {
+        
+        await supabase.auth.setSession({
+          access_token: storedUser.token,
+          refresh_token: storedUser.refresh_token
+        });
+  
+        setMyUser(storedUser);
+        console.log("Session restaurée ✅");
+      } else {
+        console.log("Pas de session ❌");
+      }
+    }
+  
+
+
+
   // Vérifie la session Supabase dès le montage
   useEffect(() => {
     async function initSession() {
@@ -23,13 +45,15 @@ export const UserProvider = ({ children }) => {
           ...prev,
           id: session.user.id,
           mail: session.user.email,
-          token: session.access_token
+          token: session.access_token,
+          refresh_token : session.refresh_token
         }));
       }
     }
     
 
     initSession();
+    restoreSession();
   }, []);
 
   return (

@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { MyTextInput } from "../components/MyTextInput";
 import { useNavigation } from "@react-navigation/native";
 import { MyUser } from "../model/MyUser";
+import NetInfo from "@react-native-community/netinfo";
+import { updateUser, updateUserSupabase } from "../services/userService";
+import { supabase } from "../services/supabase";
 
 export function MyProfil(){
      const {myUser,setMyUser} = useUser();
@@ -25,22 +28,36 @@ export function MyProfil(){
 
      }
 
-     function modification(){
+     async function modification(){
+        const {data,err} = await supabase.auth.getSession;
+       
         const value = myUser;
         if(messageTapped !== ""){
-            setMyUser({
+            const newValue = setMyUser({
                 ...value,fullName:messageTapped
             }
 
             );
             
-            const updateUser = new MyUser({
+            const updateUsers = new MyUser({
                 ...value,fullName:messageTapped
 
             });
-            setmonUtilisateur(updateUser);
+            setmonUtilisateur(updateUsers);
+            setmessageTapped(newValue);
             
-            updateUser.save();
+            
+            updateUsers.save();
+            const netState = await NetInfo.fetch();
+            
+            
+            if(netState.isConnected && netState.isInternetReachable){
+                updateUserSupabase(myUser.id,
+                    {
+                        full_name : messageTapped
+                    }
+                )
+            }
 
             retour();
             

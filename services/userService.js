@@ -8,8 +8,8 @@ export async function getUser(id){
 }
 
 export async function addClientSupabase(userId,clientID,name,phone) {
-    date = new Date();
-    await supabase.from("USERS").insert([
+    const date = new Date();
+    const {data,error} = await supabase.from("CLIENTS").insert([
         {
             id :clientID,
             userID : userId,
@@ -18,7 +18,12 @@ export async function addClientSupabase(userId,clientID,name,phone) {
             created_at:date
 
         }
-    ])
+    ]);
+    if(error){
+        console.log(error);
+    }else {
+        console.log("reussis")
+    }
     
 }
 
@@ -70,6 +75,22 @@ export async function addInvoiceSupabase(idFacture,userId,clientId,amount,status
     } else {
         console.log("reussit");
     }
+
+}
+
+export async function updateUserSupabase(idUser,fields){
+    console.log("champs fields",fields)
+    
+   
+    
+    const {data,error}= await supabase.from("USERS").update(
+        fields
+    ).eq("id",idUser); 
+    if(error){
+        console.log(error);
+    }else {
+        console.log("réussit")
+    }   
 
 }
 

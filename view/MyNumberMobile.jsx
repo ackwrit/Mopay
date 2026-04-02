@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { MyTextInput } from "../components/MyTextInput";
 import { MyBouton } from "../components/MyBouton";
 import { MyUser } from "../model/MyUser";
+import  NetInfo  from "@react-native-community/netinfo";
+import { updateUserSupabase } from "../services/userService";
 
 
 export function MyNumberMobile(){
@@ -28,16 +30,23 @@ export function MyNumberMobile(){
 
     }
 
-    function validation(){
+    async function validation(){
+        const netState = await NetInfo.fetch();
         const value = myUser;
+
         if(messageTapped !== ""){
-            const updateUser = new MyUser({
+            const updateUsers = new MyUser({
                 ...value,
                 "phone":messageTapped
         });
-        console.log("user dans enregistrer",updateUser);
-        setmonUser(updateUser);
-        updateUser.save();
+        console.log("user dans enregistrer",updateUsers);
+        setmonUser(updateUsers);
+        updateUsers.save();
+        if(netState.isConnected && netState.isInternetReachable === true){
+            updateUserSupabase(myUser.id,{
+                "phone" : parseInt(messageTapped)
+            })
+        }
 
         comeback();
 

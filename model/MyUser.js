@@ -14,6 +14,7 @@ export class MyUser {
     phone = null,
     createdAt = null,
     token = null,
+    refresh_token = null,
     
 
     }){
@@ -22,7 +23,8 @@ export class MyUser {
         this.fullName = fullName;
         this.phone = phone;
         this.createdAt = createdAt;
-        this.token = token
+        this.token = token;
+        this.refresh_token = refresh_token
       
 
     }
@@ -50,10 +52,7 @@ export class MyUser {
           if(error) throw error;
          
           //recuperation uuid
-          const id = data.user.id;
-          const tokenSupabase = data.session.access_token;
-          const date = new Date();
-          this.id = id;
+          
 
           const {error: insertEror} = await supabase.from("USERS").insert(
             [
@@ -63,13 +62,25 @@ export class MyUser {
                     phone : this.phone,
                     full_name:this.fullName,
                     created_at: date,
-                    user_token : tokenSupabase
+                    user_token : tokenSupabase,
+                    refresh_token : refreshtokenSupabase
 
 
                 }
             ]
           );
           if(insertEror) throw insertEror
+           // ⚠️ Si pas de session (email confirmation activé)
+        if(!data.session){
+        console.log("Pas de session après register (email à confirmer)");
+        return data;
+        }
+        const id = data.user.id;
+          const tokenSupabase = data.session.access_token;
+          const refreshtokenSupabase = data.session.refresh_token;
+          const date = new Date();
+          this.id = id;
+
           await this.save();
           return data;
           
@@ -82,10 +93,16 @@ export class MyUser {
         const {data, error} = await supabase.auth.signInWithPassword({email:emailTapped,password:passwordTapped});
         if(error) throw error;
          console.log(JSON.stringify(data, null, 2));
+         if(!data.session){
+        console.log("Pas de session après register (email à confirmer)");
+        return data;
+        }
 
          this.mail = data.user.email;
          this.id = data.user.id;
          this.token = data.session.access_token;
+         this.refresh_token = data.session.refresh_token;
+
 
           await this.save();
           return data;

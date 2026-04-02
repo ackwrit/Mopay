@@ -11,20 +11,29 @@ import { useActionState, useState } from "react";
 import { addClient } from "../services/database";
 import { useUser } from "./UserContext";
 import { showToast } from "../services/utilitaire";
+import NetInfo from "@react-native-community/netinfo";
+import { addArticleSupabase, addClientSupabase } from "../services/userService";
 
 export function AddClient(){
     const nav = useNavigation();
     const {myUser,setMyUser} = useUser();
     const [phone,setPhone] = useState();
     const [name,setName] = useState();
+    
     function backDashboard(){
         nav.goBack();
     }
 
     async function addBase(){
       //gestion local
-      const value = addClient(myUser.id,name,phone);
-      console.log(value);
+     
+      const idClient = addClient(myUser.id,name,phone);
+      const netState = await NetInfo.fetch();
+      
+      if(netState.isConnected && netState.isInternetReachable){
+        addClientSupabase(myUser.id,idClient,name,phone);
+      }
+      
       
       showToast(`Le client ${name} a été ajouté`);
        setTimeout(() => {
