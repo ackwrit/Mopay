@@ -46,9 +46,9 @@ export function AddInvoices(){
         useEffect(()=>{
         const clientsDB = getClients();
         setlistclient(clientsDB);
-      
 
-        if(clientsDB && clientsDB.length > 0){
+        if(checkConnexion){
+             if(clientsDB && clientsDB.length > 0){
            const premierClient = clientsDB[0];
            setselectedClient(premierClient);
 
@@ -77,6 +77,26 @@ export function AddInvoices(){
             )
         }
 
+        }
+        else {
+            Alert.alert(
+                "Aucune connexion",
+                "Vous devez accéder à un réseau internet pour créer une facture",
+                [
+                    {
+                        text : "ok",
+                        onPress : ()=>{nav.goBack()}
+                        
+                    }
+                ]
+            )
+
+        }
+        
+      
+
+       
+
         },[passage])
 
     
@@ -97,6 +117,17 @@ export function AddInvoices(){
         setselectedClient(client)
 
 
+    }
+    async function checkConnexion(){
+    const netState = await NetInfo.fetch();
+    if(netState.isConnected && netState.isInternetReachable){
+            return true;
+    
+    }
+    else {
+    return false
+    }
+    
     }
 
     async function validation(){

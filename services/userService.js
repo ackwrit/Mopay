@@ -2,7 +2,12 @@ import {supabase} from './supabase';
 
 
 export async function getUser(id){
-    return await supabase.from('USERS').select("*").eq("id",id);
+    console.log("récupération de la base donnée")
+    const {data,error} =  await supabase.from('USERS').select("*").eq("id",id);
+    if(error){
+        console.log(error)
+    }
+    return data;
 
 
 }
@@ -92,6 +97,15 @@ export async function updateUserSupabase(idUser,fields){
         console.log("réussit")
     }   
 
+}
+
+export async function allInvoice(){
+    const {data,error} = await supabase.select().from("FACTURES");
+    if(error){
+        return error;
+    }else {
+        return data
+    }
 }
 
       

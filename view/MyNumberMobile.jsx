@@ -21,10 +21,10 @@ export function MyNumberMobile(){
     
     useEffect(()=>{
         setmessageTapped(myUser.phone);
-        console.log("user use effect",myUser);
+        
        
 
-    },[]);
+    },[myUser]);
     function comeback(){
         nav.goBack();
 
@@ -39,12 +39,13 @@ export function MyNumberMobile(){
                 ...value,
                 "phone":messageTapped
         });
-        console.log("user dans enregistrer",updateUsers);
+        const newUsers = {...value,"phone":messageTapped};
+        setMyUser(newUsers);
         setmonUser(updateUsers);
         updateUsers.save();
         if(netState.isConnected && netState.isInternetReachable === true){
             await updateUserSupabase(updateUsers.id,{
-                "phone" : parseInt(messageTapped)
+                "phone" : messageTapped
             })
         }
 

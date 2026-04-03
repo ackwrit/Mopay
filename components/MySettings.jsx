@@ -2,19 +2,25 @@ import { Text,View } from "react-native";
 import { styleSettings } from "./MySettings.style";
 import { MyParametreBouton } from "./MyParametreBouton";
 import { useUser } from "../view/UserContext";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 export function MySettings(){
     const {myUser,setMyUser} = useUser();
     const [tel,setTel] = useState("");
     const nav = useNavigation();
-    useEffect(()=>{
-       checkPhone();
-        
+
+    useFocusEffect(
+        useCallback(()=>{
+            checkPhone();
+
+        },[myUser])
+    );
+   
+    
 
 
-    });
+   
 
     function checkPhone(){
         const value = myUser.phone;

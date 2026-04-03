@@ -10,7 +10,7 @@ export const styleNav = StyleSheet.create({
         height : 60,
         borderColor :"black",
         borderWidth : 1,
-        justifyContent : "space-around",
+        justifyContent : "space-between",
         alignItems :"center",
         shadowColor: "#000000",
         paddingHorizontal: 10,
@@ -23,6 +23,8 @@ export const styleNav = StyleSheet.create({
         elevation: 10
     },
     navLabel : {
-        alignItems :"center"
+        alignItems :"center",
+        width: 70,
+        justifyContent: "center",
     }
 });

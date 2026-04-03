@@ -20,10 +20,15 @@ import { AllHistory } from './view/AllHistory';
 import { MyProfil } from './view/MyProfil';
 import { MyNumberMobile } from './view/MyNumberMobile';
 import { supabase } from './services/supabase';
+import  NetInfo  from '@react-native-community/netinfo';
+import { getUser } from './services/userService';
+import { AllInvoices } from './components/AllInvoices';
+
 
 
 const Stack = createNativeStackNavigator();
 export default function App() {
+  
   
   
   
@@ -69,6 +74,7 @@ export default function App() {
 
   const [isLoading,setIsLoadiang] = useState(false);
   const [isExistLocal,setIsExistLocal] = useState(false);
+ 
   
  
 const navTheme = {
@@ -79,8 +85,24 @@ const navTheme = {
 
 async function checkLocal(){
   const isLocal = await AsyncStorage.getItem('user') ?? null;
+ 
   if(isLocal !== null){
     setIsExistLocal(true);
+    const parseUser = JSON.parse(isLocal)
+    const netState = await NetInfo.fetch();
+    if(netState.isConnected && netState.isInternetReachable){
+      const newUser = await getUser(parseUser.id);
+      const objUser = newUser[0];
+    
+      const upadeUserfield = {
+        ...objUser,
+        "fullName":objUser.full_name,
+        "token":objUser.user_token
+      };
+      await AsyncStorage.setItem('user',JSON.stringify(upadeUserfield));
+
+    }
+
 
 
    
@@ -152,6 +174,7 @@ async function checkLocal(){
          <Stack.Screen name='settings' component={AllHistory}></Stack.Screen>
          <Stack.Screen name='myprofil' component={MyProfil}></Stack.Screen>
            <Stack.Screen name='mynumbermobile' component={MyNumberMobile}></Stack.Screen>
+           <Stack.Screen name='allinvoices' component={AllInvoices}></Stack.Screen>
 
 
       </Stack.Navigator>

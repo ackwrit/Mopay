@@ -6,10 +6,14 @@ export function MyNavBar({ state, descriptors, navigation }) {
   return (
     <View style={styleNav.container}>
       {state.routes.map((route, index) => {
+         
         const { options } = descriptors[route.key];
+        
+        
         const label = options.tabBarLabel !== undefined
           ? options.tabBarLabel
           : route.name;
+          
 
         const isFocused = state.index === index;
 
@@ -34,9 +38,11 @@ export function MyNavBar({ state, descriptors, navigation }) {
                   ? "time"
                   : route.name === "Clients"
                   ? "person"
+                  :route.name === "Factures"
+                  ? "receipt-outline"
                   : "settings"
               }
-              size={20}
+              size={isFocused ? 30: 20}
               color={isFocused ? "blue" : "gray"}
             />
             <Text style={{ color: isFocused ? "blue" : "gray" }}>{label}</Text>

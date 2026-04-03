@@ -12,6 +12,7 @@ import { MyHome } from "../components/home";
 import { AllClient } from "../components/AllClient";
 import { AllHistory } from "../components/AllHistory";
 import { MySettings } from "../components/MySettings";
+import { AllInvoices } from "../components/AllInvoices";
 
 
 
@@ -31,7 +32,7 @@ export function Dashboard(){
         <ImageBackground style={styles.dashboardImageBackground} imageStyle={{opacity:0.4}}source={backgroundImage}>
             <Tab.Navigator
         
-        initialRouteName="Connexion"
+        initialRouteName="Accueil"
         screenOptions={{
           headerShown: false,
           tabBarStyle: { height: 60 },
@@ -42,9 +43,11 @@ export function Dashboard(){
         tabBar={(props) => <MyNavBar {...props} />}
         
       >
-          <Tab.Screen name="Accueil" component={MyHome} />
-        <Tab.Screen name="Historique" component={AllHistory} />
+          <Tab.Screen name="Factures" component={AllInvoices} /> 
+        
         <Tab.Screen name="Clients" component={AllClient} />
+        <Tab.Screen name="Accueil" component={MyHome} />
+       <Tab.Screen name="Historique" component={AllHistory} />
         <Tab.Screen name="Paramètre" component={MySettings}/>
       </Tab.Navigator>
       </ImageBackground>
