@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { getClients, getonlyclients } from "../services/database";
 
-export function MyFactureGlobal({item}){
+export function MyFactureGlobal({item,onPress}){
     const [idclient,setidclient] = useState();
     useEffect(()=>{
         recuperationClient();
@@ -82,7 +82,7 @@ export function MyFactureGlobal({item}){
                 
 
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPress}>
 
            
           

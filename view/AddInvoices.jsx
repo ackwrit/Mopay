@@ -3,7 +3,7 @@ import { styles } from "../styles/App.style";
 import background from '../assets/background.png'
 import { FontAwesome } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { addArticle, addInvoice, getArticles, getClients, updateArticle, updateInvoice } from "../services/database";
+import { addArticle, addInvoice, getArticles, getClients, getonlyclients, updateArticle, updateInvoice } from "../services/database";
 import { useCallback, useEffect, useState } from "react";
 import { MyCardClient } from "../components/MyCardClient";
 import { MyTextButton } from "../components/MyTextButton";
@@ -13,10 +13,16 @@ import { useUser } from "./UserContext";
 import { Alert } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { addArticleSupabase, addInvoiceSupabase } from "../services/userService";
+import { useRoute } from "@react-navigation/native";
 
 
 
 export function AddInvoices(){
+    const route = useRoute();
+    const facture = route.params?.facture;
+    const clientrecu = route.params?.client;
+    const [loading,setloading] = useState(true);
+    const [clientLoaded,setclientLoaded] = useState(false);
       
     const nav = useNavigation();
     const [selectClient,setselectedClient]= useState();
@@ -44,20 +50,57 @@ export function AddInvoices(){
     
     
         useEffect(()=>{
+          
+           
+        
+       
+       
+        fetchData();
+        
+      
+
+       
+
+        },[])
+
+    
+
+    useEffect(()=>{
+        if(invoiceId && selectClient){
+            getAllArticles();
+            setloading(false)
+
+        }
+        
+    },[invoiceId,selectClient]);
+
+    useEffect(()=>{
+        console.log("nouvelle valeur", selectClient)
+    },[selectClient])
+
+    function back(){
+        nav.goBack();
+
+    }
+
+    async function init(){
+        setloading(true);
         const clientsDB = getClients();
         setlistclient(clientsDB);
-
-        if(checkConnexion){
+        const isConnected = await checkConnexion();
+         if(isConnected){
              if(clientsDB && clientsDB.length > 0){
            const premierClient = clientsDB[0];
            setselectedClient(premierClient);
 
            // Créer la facture maintenant que le client est défini
+           
+
            if(passage){
             const invoiceIdTemp = addInvoice(myUser.id, premierClient.id, 0, "pending", 0);
            setInvoiceId(invoiceIdTemp);
            setPassage(true);
-            console.log("Facture créée avec id avec temp:", invoiceIdTemp);
+            
 
            }
            
@@ -92,21 +135,50 @@ export function AddInvoices(){
             )
 
         }
+        setloading(false);
+
+    }
+
+    async function fetchData(){
+        if (!facture){
+            await init();
+        }else {
+            await recuperation();
+        }
+        setclientLoaded(true);
+
+    }
+
+
+    async function recuperation(){
+        setloading(true);
+        const clientsDB = getClients();
+        setlistclient(clientsDB);
+
         
-      
+        
+
+        const clientrecupere = clientrecu;
+         if (clientrecupere) {
+        setselectedClient(clientrecupere); // le nom sera disponible pour le rendu
+        setInvoiceId(facture.id);
+        getAllArticles();
+    } else {
+        Alert.alert(
+            "Client introuvable",
+            "Le client de cette facture n'a pas été trouvé."
+        );
+    }
 
        
+       
 
-        },[passage])
+ 
 
-    
-
-    useEffect(()=>{
-        getAllArticles();
-    },[])
-
-    function back(){
-        nav.goBack();
+        setloading(false);
+        
+        
+        
 
     }
 
@@ -142,7 +214,7 @@ export function AddInvoices(){
         const idArticle = addArticle(myUser.id,name,quantite,prix,invoiceId)
         setModalVissible(false);
         //intégrer dans la base supabase
-        console.log("réseau",netState);
+        
         if (netState.isConnected && netState.isInternetReachable === true){
             updateArticle(idArticle,{"isFinished":1})
             addArticleSupabase(idArticle,myUser.id,prix,name,quantite,invoiceId);
@@ -189,8 +261,18 @@ export function AddInvoices(){
     }
  
 
+ if(clientLoaded){   
+ if(loading || !selectClient){
     
+    return (
+        <View style={{justifyContent :"center",alignItems:"center"}}>
+            <Text>En chargement ...</Text>
+        </View>
 
+    );
+
+ }
+ else {
     return (
         //modal
 
@@ -446,4 +528,8 @@ export function AddInvoices(){
             
         </ImageBackground>
     );
+
+ }
+    
+}
 }
