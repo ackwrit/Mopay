@@ -1,4 +1,4 @@
-import { Image,  ScrollView, Text, View } from "react-native";
+import { Image,  ScrollView, Text, TouchableOpacity, View } from "react-native";
 import logo from "../assets/logo.png"
 import { styles } from "../styles/App.style";
 import { MySummaryButton } from "../components/MySummaryButton";
@@ -33,7 +33,7 @@ export function MyHome(){
                 return acc + invoice.amount;
 
             },0);
-            console.log("somme calculé : ",s);
+            
             setsum(s);
             const dataclientLocal = getClientLocal();
            
@@ -116,7 +116,13 @@ export function MyHome(){
             <View  style={styles.history_dashboard}>
                 <View style={styles.header_bloc_history}>
                     <Text style= {styles.title}>Activité récente</Text>
-                    <Text style={styles.subtitle}>Voir tout</Text>
+                    <TouchableOpacity onPress={()=>{
+                        nav.navigate("Historique")
+                    }}>
+                        <Text style={styles.subtitle}>Voir tout</Text>
+
+                    </TouchableOpacity>
+                    
                    
                     
 

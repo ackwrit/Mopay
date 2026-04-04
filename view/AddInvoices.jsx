@@ -159,8 +159,7 @@ export function AddInvoices(){
         const value = getArticles(invoiceId);
         
         setlisteArticle(value);
-        console.log("article",value);
-           // Calculer la somme totale
+       
             const total = value.reduce((acc, article) => acc + (article.amount * article.quantite), 0);
             setsubsumTotalFacture(total);
             const calculRemise = Math.round(total * remise / 100);

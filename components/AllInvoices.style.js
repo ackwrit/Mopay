@@ -6,7 +6,7 @@ export const styleAllInvoices = StyleSheet.create({
         paddingTop : 70,
         paddingBottom : 40,
         flex : 1,
-        alignItems :"center"
+        
 
     },
     

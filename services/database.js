@@ -122,6 +122,11 @@ export const getClients = () => {
   
 };
 
+export const getonlyclients = (idclient)=> {
+  return db.getAllAsync(`SELECT * FROM clients where id = '${idclient}';`);
+
+}
+
 // Supprimer une facture
 export const deleteInvoice = (invoiceId) => {
   db.transaction(tx => {

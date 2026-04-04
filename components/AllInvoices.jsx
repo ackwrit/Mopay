@@ -3,6 +3,7 @@ import { styleAllInvoices } from "./AllInvoices.style";
 import { useUser } from "../view/UserContext";
 import { useEffect, useState } from "react";
 import { getLastInvoices } from "../services/database";
+import { MyFactureGlobal } from "./MyFactureGlobal";
 
 export function AllInvoices(){
     const {myUser,setMyUser} = useUser();
@@ -28,26 +29,41 @@ export function AllInvoices(){
 
     function selected(choix){
         if(choix === "all"){
-            getLastInvoices();
+            const value  = getLastInvoices();
+            setlistfacture(value);
             
             setSelect("all");
         }
-        else {
-            const value = listFacture;
+        if(choix === "pending") {
+            const value = getLastInvoices();
+            const result = value.filter((item)=>{
+                return (item.isFinished === 0)
+            });
+           
+            
+            setSelect("pending");
+            setlistfacture(result);
+        }
+           if(choix === "termine") {
+            const value = getLastInvoices();
             const result = value.filter((item)=>{
                 return (item.isFinished === 1)
             });
-            console.log("resultat du tableue",result);
-            setSelect("pending");
+            
+            
+            setSelect("termine");
+            setlistfacture(result);
         }
+        
     }
 
 
 
     return (
         <View style={styleAllInvoices.container}>
-            
-            <View style={styleAllInvoices.selection}>
+
+            <View style={{alignItems:"center"}}>
+                  <View style={styleAllInvoices.selection}>
                 <TouchableOpacity onPress={()=>{selected("all")}}>
                     <Text style={{color:(select==="all")?"blue":"black"}}>Tous</Text>
 
@@ -58,14 +74,24 @@ export function AllInvoices(){
                     <Text style={{color:(select==="pending")?"blue":"black"}}>En cours</Text>
 
                 </TouchableOpacity>
+
+                  <View style={{borderColor:"gray",borderWidth:1,height:"100%"}}></View>
+                <TouchableOpacity onPress={()=>selected("termine")}>
+                    <Text style={{color:(select==="termine")?"blue":"black"}}>Terminé</Text>
+
+                </TouchableOpacity>
                 
               
             </View>
+
+            </View>
+            
+          
             <FlatList
             data={listFacture}
-            keyExtractor={(item,index)=>{item.id?.toString() || index.toString()}}
+            keyExtractor={(item,index)=>{ return item.id?.toString() || index.toString()}}
             renderItem={({item})=>(
-                <Text>{item.id}</Text>
+                <MyFactureGlobal item={item}/>
             )}
             
             
